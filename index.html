@@ -157,10 +157,11 @@ main { max-width: 1300px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
 }
 .timeline-track {
   position: relative;
-  height: 28px;
+  height: 38px;
   background: #f4f3f0;
   border-radius: 6px;
   overflow: hidden;
+  border: 1px solid rgba(0,0,0,.06);
 }
 .tl-appt {
   position: absolute;
@@ -172,6 +173,32 @@ main { max-width: 1300px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
   align-items: center;
   overflow: hidden;
   min-width: 2px;
+  z-index: 3;
+}
+.tl-blocked {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: repeating-linear-gradient(135deg, #d4d4d0, #d4d4d0 5px, #c8c8c4 5px, #c8c8c4 10px);
+  border: 1px solid #a8a8a4;
+  z-index: 2;
+}
+.tl-gap {
+  position: absolute;
+  top: 2px;
+  height: calc(100% - 4px);
+  border-radius: 4px;
+  background: repeating-linear-gradient(45deg, rgba(34,197,94,.08), rgba(34,197,94,.08) 4px, rgba(34,197,94,.18) 4px, rgba(34,197,94,.18) 8px);
+  border: 1px dashed rgba(34,197,94,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8.5px;
+  font-weight: 600;
+  font-family: 'DM Mono', monospace;
+  color: #15803d;
+  z-index: 1;
+  overflow: hidden;
 }
 .tl-appt-text {
   font-size: 9px;
@@ -579,6 +606,8 @@ function renderMobile() {
 
     const open = isOpen(i);
     const rdvs = realRdv(i);
+    const blocked = blockedSlots(i);
+    const win = getWorkingWindow(i);
 
     const row = document.createElement('div');
     row.className = 'barber-row' + (b.prest ? ' prest' : '');
@@ -599,11 +628,9 @@ function renderMobile() {
     </div>`;
 
     if (!open) {
-      row.innerHTML += `<div class="tl-closed">Pas de service aujourd'hui</div>`;
-    } else if (rdvs.length === 0) {
-      row.innerHTML += `<div class="no-rdv">Aucun rendez-vous</div>`;
+      row.innerHTML += `<div class="tl-closed">Indisponible aujourd'hui</div>`;
     } else {
-      // Timeline horizontale
+      // Timeline horizontale avec RDV + blocs grisés + trous libres
       const tlWrap = document.createElement('div');
       tlWrap.className = 'timeline-wrap';
 
@@ -621,9 +648,51 @@ function renderMobile() {
       }
       tlWrap.appendChild(hoursRow);
 
-      // Track timeline
       const track = document.createElement('div');
       track.className = 'timeline-track';
+
+      // 1) Blocs grisés Planity
+      blocked.forEach(ev => {
+        const startMin = (ev.st.getHours()-H0)*60 + ev.st.getMinutes();
+        const endMin   = (ev.en.getHours()-H0)*60 + ev.en.getMinutes();
+        const left  = Math.max(0, startMin/TOTAL_MIN*100);
+        const width = Math.max(0.3, (endMin-startMin)/TOTAL_MIN*100);
+        const blk = document.createElement('div');
+        blk.className = 'tl-blocked';
+        blk.style.cssText = `left:${left}%;width:${width}%`;
+        blk.title = `Indisponible — ${fmtTime(ev.st)}–${fmtTime(ev.en)}`;
+        track.appendChild(blk);
+      });
+
+      // 2) Trous libres (uniquement entre RDV/blocs dans la fenêtre de travail)
+      if (win) {
+        const occupied = [...rdvs, ...blocked].map(e => ({
+          s: (e.st.getHours()-H0)*60+e.st.getMinutes(),
+          e: (e.en.getHours()-H0)*60+e.en.getMinutes(),
+        })).sort((a,b) => a.s - b.s);
+        let cursor = win.start;
+        const gaps = [];
+        for (const r of occupied) {
+          if (r.s > cursor) gaps.push({ start: cursor, end: r.s });
+          if (r.e > cursor) cursor = r.e;
+        }
+        if (cursor < win.end) gaps.push({ start: cursor, end: win.end });
+
+        gaps.forEach(g => {
+          const dur = g.end - g.start;
+          if (dur < 15) return;
+          const left  = g.start/TOTAL_MIN*100;
+          const width = dur/TOTAL_MIN*100;
+          const gapEl = document.createElement('div');
+          gapEl.className = 'tl-gap';
+          gapEl.style.cssText = `left:${left}%;width:${width}%`;
+          gapEl.textContent = width > 6 ? formatDuration(dur) : '';
+          gapEl.title = `Libre ${formatDuration(dur)}`;
+          track.appendChild(gapEl);
+        });
+      }
+
+      // 3) RDV clients (par-dessus tout)
       rdvs.forEach(ev => {
         const startMin = (ev.st.getHours()-H0)*60 + ev.st.getMinutes();
         const endMin   = (ev.en.getHours()-H0)*60 + ev.en.getMinutes();
@@ -636,19 +705,26 @@ function renderMobile() {
         appt.title = `${ev.label} — ${fmtTime(ev.st)}–${fmtTime(ev.en)}`;
         track.appendChild(appt);
       });
+
       tlWrap.appendChild(track);
       row.appendChild(tlWrap);
 
       // Liste des RDV
-      const list = document.createElement('div');
-      list.className = 'rdv-list';
-      rdvs.forEach(ev => {
-        list.innerHTML += `<div class="rdv-item" style="background:${b.bg}">
-          <span class="rdv-time" style="color:${b.text}">${fmtTime(ev.st)}–${fmtTime(ev.en)}</span>
-          <span class="rdv-label" style="color:${b.text}">${ev.label}</span>
-        </div>`;
-      });
-      row.appendChild(list);
+      if (rdvs.length === 0) {
+        row.innerHTML += `<div class="no-rdv">Aucun rendez-vous prévu</div>`;
+      } else {
+        const list = document.createElement('div');
+        list.className = 'rdv-list';
+        rdvs.forEach(ev => {
+          const dur = (ev.en - ev.st) / 60000;
+          list.innerHTML += `<div class="rdv-item" style="background:${b.bg}">
+            <span class="rdv-time" style="color:${b.text}">${fmtTime(ev.st)}–${fmtTime(ev.en)}</span>
+            <span class="rdv-label" style="color:${b.text}">${ev.label}</span>
+            <span style="color:${b.text};opacity:.6;font-size:10px;font-family:'DM Mono',monospace;margin-left:auto">${formatDuration(dur)}</span>
+          </div>`;
+        });
+        row.appendChild(list);
+      }
     }
 
     wrap.appendChild(row);
