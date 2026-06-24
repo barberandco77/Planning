@@ -5,16 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Planning — Barber&Co</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap');
 
 :root {
-  --black: #131312;
-  --surface: #f4f3f0;
+  --black: #111;
+  --surface: #f6f5f2;
   --white: #fff;
-  --border: rgba(0,0,0,.08);
-  --border-strong: rgba(0,0,0,.13);
-  --muted: #8a8a84;
-  --now: #e23b3b;
+  --border: rgba(0,0,0,.09);
+  --muted: #888;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--black); }
@@ -22,157 +20,156 @@ body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: va
 /* ── HEADER ── */
 header {
   background: var(--white); border-bottom: 1px solid var(--border);
-  padding: 0 16px; height: 52px;
+  padding: 0 1.5rem; height: 54px;
   display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 50;
+  position: sticky; top: 0; z-index: 99;
 }
 .logo { display: flex; align-items: center; gap: 9px; }
-.lm { width: 28px; height: 28px; background: var(--black); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; }
-.lt { font-size: 14px; font-weight: 700; letter-spacing: -.01em; }
+.lm { width: 28px; height: 28px; background: var(--black); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; }
+.lt { font-size: 14px; font-weight: 600; }
 .ls { font-size: 10px; color: var(--muted); }
 .live { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
 .ld { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-main { max-width: 1300px; margin: 0 auto; padding: 14px 12px 40px; }
+/* ── MAIN ── */
+main { max-width: 1300px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+
+.err-banner { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 10px 14px; margin-bottom: 10px; font-size: 12px; color: #991b1b; }
 
 /* ── NAV ── */
-.nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 8px; flex-wrap: wrap; }
-.date-nav { display: flex; align-items: center; gap: 6px; }
-.btn { background: var(--white); border: 1px solid var(--border-strong); border-radius: 8px; height: 36px; min-width: 36px; padding: 0 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; color: #555; transition: all .12s; font-family: 'DM Sans', sans-serif; }
+.nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 8px; }
+.dn { display: flex; align-items: center; gap: 7px; }
+.btn { background: var(--white); border: 1px solid var(--border); border-radius: 7px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; color: var(--muted); transition: all .15s; }
 .btn:hover { background: var(--surface); color: var(--black); }
-.btn:active { transform: scale(.95); }
-.date-label { font-size: 14px; font-weight: 600; text-transform: capitalize; min-width: 180px; text-align: center; }
-.btn-today { background: var(--black); color: #fff; border: none; border-radius: 8px; height: 36px; padding: 0 16px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
-.btn-today:active { transform: scale(.96); }
+.dd { font-size: 14px; font-weight: 500; min-width: 200px; text-align: center; text-transform: capitalize; }
+.btn-today { background: var(--black); color: #fff; border: none; border-radius: 7px; padding: 7px 16px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity .15s; }
+.btn-today:hover { opacity: .8; }
 
-.err-banner { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 9px 13px; margin-bottom: 12px; font-size: 12px; color: #991b1b; }
-
-/* ── CARDS SUMMARY ── */
-.cards { display: grid; grid-template-columns: repeat(10, minmax(0,1fr)); gap: 6px; margin-bottom: 16px; }
-.card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 9px 5px; text-align: center; position: relative; overflow: hidden; }
+/* ── STATUS CARDS ── */
+.cards { display: grid; grid-template-columns: repeat(10, minmax(0,1fr)); gap: 6px; margin-bottom: 1.25rem; }
+.card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 6px; text-align: center; position: relative; overflow: hidden;
+}
 .card.prest { border-style: dashed; }
-.card-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-.card-name { font-size: 10px; font-weight: 700; margin: 3px 0 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.badge { display: inline-flex; align-items: center; gap: 3px; font-size: 8.5px; font-weight: 600; padding: 2px 6px; border-radius: 20px; text-transform: uppercase; letter-spacing: .02em; }
+.card-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 10px 10px 0 0; }
+.card-name { font-size: 10px; font-weight: 600; margin: 3px 0 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.badge { display: inline-flex; align-items: center; gap: 3px; font-size: 9px; font-weight: 500; padding: 2px 6px; border-radius: 20px; margin-bottom: 4px; }
 .badge-open { background: #dcfce7; color: #15803d; }
-.badge-closed { background: #f1f1ef; color: #9a9a94; }
-.bdot { width: 4px; height: 4px; border-radius: 50%; }
-.bdot-o { background: #22c55e; }
-.bdot-c { background: #c4c4be; }
-.card-num { font-size: 17px; font-weight: 700; font-family: 'DM Mono', monospace; line-height: 1.1; margin-top: 4px; }
-.card-sub { font-size: 9px; color: var(--muted); }
+.badge-closed { background: #f1f5f9; color: #94a3b8; }
+.bdot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
+.bdot-open { background: #22c55e; }
+.bdot-closed { background: #cbd5e1; }
+.card-num { font-size: 18px; font-weight: 600; font-family: 'DM Mono', monospace; line-height: 1; }
+.card-sub { font-size: 9px; color: var(--muted); margin-top: 1px; }
 
-/* ════════════════ DESKTOP GRID ════════════════ */
-.desktop-grid { display: none; }
-@media (min-width: 721px) {
-  .desktop-grid { display: block; }
-  .mobile-list { display: none; }
+/* ── DESKTOP GRID VIEW ── */
+.grid-view { display: block; }
+.cal-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.cal-head {
+  display: grid;
+  grid-template-columns: 44px repeat(9, minmax(0,1fr));
+  background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.cal-head-cell { padding: 7px 3px; text-align: center; border-right: 1px solid var(--border); font-size: 10px; font-weight: 600; }
+.cal-head-cell:last-child { border-right: none; }
+.cal-head-cell.sep { border-left: 2px solid rgba(0,0,0,.12); }
+.cal-head-bar { height: 2px; border-radius: 2px; margin: 3px auto 0; width: 16px; }
+.cal-row { display: grid; grid-template-columns: 44px repeat(9, minmax(0,1fr)); }
+.cal-row:last-child .slot, .cal-row:last-child .tc { border-bottom: none; }
+.tc {
+  border-right: 1px solid var(--border); border-bottom: 1px solid rgba(0,0,0,.05);
+  height: 28px; display: flex; align-items: flex-start; justify-content: flex-end;
+  padding: 3px 5px 0; font-size: 9.5px; color: var(--muted);
+  font-family: 'DM Mono', monospace; background: var(--surface);
+}
+.slot { border-right: 1px solid var(--border); border-bottom: 1px solid rgba(0,0,0,.05); height: 28px; position: relative; }
+.slot:last-child { border-right: none; }
+.slot.h { border-bottom: 1px solid rgba(0,0,0,.09) !important; }
+.slot.sep { border-left: 2px solid rgba(0,0,0,.12); }
+.appt {
+  position: absolute; left: 2px; right: 2px; top: 1px;
+  border-radius: 4px; padding: 2px 3px; font-size: 8.5px; line-height: 1.3; overflow: hidden; z-index: 2;
+}
+.appt-n { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.appt-t { font-size: 7.5px; opacity: .7; font-family: 'DM Mono', monospace; }
+
+/* Blocs grisés & trous libres dans la grille desktop */
+.blocked {
+  position: absolute; left: 2px; right: 2px; top: 1px;
+  background: repeating-linear-gradient(135deg, #cfcfca, #cfcfca 5px, #c2c2bc 5px, #c2c2bc 10px);
+  border: 1px solid #aeaea8; border-radius: 4px; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: rgba(0,0,0,.5); text-shadow: 0 1px 0 rgba(255,255,255,.4);
+}
+.gap {
+  position: absolute; left: 3px; right: 3px; top: 1px;
+  background: rgba(34,197,94,.06); border: 1px dashed rgba(34,197,94,.35);
+  border-radius: 4px; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
 }
 
-.dg-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-.dg-scroll { overflow: auto; max-height: calc(100vh - 230px); position: relative; }
-.dg-inner { display: flex; width: 100%; position: relative; }
-.dg-time { flex: 0 0 44px; position: sticky; left: 0; z-index: 20; background: var(--white); box-shadow: 1px 0 0 var(--border); }
-.dg-time .dg-head { background: var(--white); }
-.dg-tbody { position: relative; }
-.dg-tlabel { position: absolute; right: 6px; font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; transform: translateY(-50%); font-weight: 500; }
-.dg-col { flex: 1 1 0; min-width: 0; border-right: 1px solid var(--border); position: relative; }
-.dg-col:last-child { border-right: none; }
-.dg-col.psep { border-left: 2px solid var(--border-strong); }
-.dg-head { position: sticky; top: 0; z-index: 15; height: 46px; background: var(--white); border-bottom: 1.5px solid var(--border-strong); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 3px; }
-.dg-head.corner { z-index: 30; }
-.dg-hname { font-size: 11.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; display: flex; align-items: center; gap: 4px; }
-.dg-hbar { width: 3px; height: 11px; border-radius: 2px; flex-shrink: 0; }
-.dg-hbadge { font-size: 8px; font-weight: 600; padding: 1px 5px; border-radius: 8px; }
-.dg-body { position: relative; }
-.dg-line { position: absolute; left: 0; right: 0; border-top: 1px solid var(--border); pointer-events: none; }
-.dg-line.half { border-top: 1px dashed rgba(0,0,0,.045); }
-.dg-closed { position: absolute; left: 0; right: 0; background: repeating-linear-gradient(135deg, rgba(0,0,0,.022), rgba(0,0,0,.022) 6px, rgba(0,0,0,.045) 6px, rgba(0,0,0,.045) 12px); pointer-events: none; z-index: 1; }
-.dg-evt { position: absolute; left: 2px; right: 2px; border-radius: 5px; overflow: hidden; z-index: 4; padding: 3px 5px; box-shadow: 0 1px 2px rgba(0,0,0,.07); }
-.dg-evt-s { font-size: 10px; font-weight: 700; line-height: 1.1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-.dg-evt-t { font-size: 8.5px; font-family: 'DM Mono', monospace; opacity: .75; margin-top: 1px; }
-.dg-block { position: absolute; left: 2px; right: 2px; background: repeating-linear-gradient(135deg, #cfcfca, #cfcfca 5px, #c2c2bc 5px, #c2c2bc 10px); border: 1px solid #aeaea8; border-radius: 4px; z-index: 3; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-.dg-block-i { display: flex; flex-direction: column; align-items: center; gap: 1px; color: rgba(0,0,0,.5); }
-.dg-gap { position: absolute; left: 3px; right: 3px; border-radius: 4px; background: rgba(34,197,94,.06); border: 1px dashed rgba(34,197,94,.3); z-index: 2; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-.dg-gap-t { font-size: 8.5px; font-weight: 700; font-family: 'DM Mono', monospace; color: #15803d; text-align: center; line-height: 1.15; }
-.dg-now { position: absolute; left: 0; right: 0; border-top: 2px solid var(--now); z-index: 12; }
-.dg-now::before { content: ''; position: absolute; left: -3px; top: -4px; width: 7px; height: 7px; border-radius: 50%; background: var(--now); }
-.dg-clabel { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-90deg); font-size: 10px; font-weight: 600; color: rgba(0,0,0,.28); white-space: nowrap; letter-spacing: .08em; text-transform: uppercase; z-index: 2; }
-
-/* ════════════════ MOBILE LIST ════════════════ */
-.mobile-list { display: block; }
-@media (min-width: 721px) { .mobile-list { display: none; } }
+/* ════════ MOBILE : LISTE VERTICALE ════════ */
+.mobile-view { display: none; }
 
 .m-barber { background: var(--white); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
 .m-barber.prest { border-style: dashed; }
+
 .m-bhead { display: flex; align-items: center; justify-content: space-between; padding: 11px 13px; border-bottom: 1px solid var(--border); }
 .m-bhead-l { display: flex; align-items: center; gap: 9px; }
 .m-bdot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 .m-bname { font-size: 14px; font-weight: 700; }
 .m-bhead-r { display: flex; align-items: center; gap: 8px; }
 .m-bcount { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
-.m-bbadge { font-size: 9.5px; font-weight: 600; padding: 3px 9px; border-radius: 20px; display: flex; align-items: center; gap: 4px; text-transform: uppercase; }
+.m-badge { font-size: 9.5px; font-weight: 600; padding: 3px 9px; border-radius: 20px; display: flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: .02em; }
 
-/* Collapsed closed barber */
-.m-closed { display: flex; align-items: center; justify-content: space-between; padding: 11px 13px; opacity: .65; }
+.m-closed { display: flex; align-items: center; justify-content: space-between; padding: 11px 13px; opacity: .7; }
 .m-closed-l { display: flex; align-items: center; gap: 9px; }
 .m-closed-name { font-size: 13px; font-weight: 600; color: var(--muted); }
 
-/* Day timeline (vertical) */
 .m-day { padding: 8px; display: flex; flex-direction: column; gap: 5px; }
 .m-seg { display: flex; gap: 9px; align-items: stretch; }
-.m-seg-time { flex: 0 0 42px; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--muted); padding-top: 8px; font-weight: 500; text-align: right; }
-.m-seg-body { flex: 1; border-radius: 9px; padding: 9px 12px; display: flex; flex-direction: column; justify-content: center; min-height: 44px; }
+.m-seg-time { flex: 0 0 40px; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--muted); padding-top: 9px; font-weight: 500; text-align: right; }
+.m-seg-body { flex: 1; border-radius: 9px; padding: 9px 12px; min-height: 42px; display: flex; flex-direction: column; justify-content: center; }
 
-/* RDV segment */
 .m-rdv { box-shadow: inset 0 0 0 1px rgba(0,0,0,.03); }
-.m-rdv-top { display: flex; align-items: center; gap: 6px; }
 .m-rdv-service { font-size: 13px; font-weight: 700; line-height: 1.2; }
-.m-rdv-lock { font-size: 11px; opacity: .6; }
 .m-rdv-meta { font-size: 11px; font-family: 'DM Mono', monospace; opacity: .75; margin-top: 2px; }
 
-/* Blocked segment */
-.m-block { background: repeating-linear-gradient(135deg, #d6d6d1, #d6d6d1 6px, #c9c9c4 6px, #c9c9c4 12px); border: 1px solid #b4b4ae; }
-.m-block-row { display: flex; align-items: center; gap: 7px; color: rgba(0,0,0,.55); }
+.m-block { background: repeating-linear-gradient(135deg, #d6d6d1, #d6d6d1 6px, #c9c9c4 6px, #c9c9c4 12px); border: 1px solid #b4b4ae; flex-direction: row; align-items: center; gap: 7px; color: rgba(0,0,0,.55); }
 .m-block-txt { font-size: 12px; font-weight: 600; }
 .m-block-dur { font-size: 11px; font-family: 'DM Mono', monospace; opacity: .8; margin-left: auto; }
 
-/* Free gap segment */
-.m-gap { background: rgba(34,197,94,.07); border: 1.5px dashed rgba(34,197,94,.4); }
-.m-gap-row { display: flex; align-items: center; gap: 7px; color: #15803d; }
-.m-gap-icon { font-size: 13px; }
+.m-gap { background: rgba(34,197,94,.07); border: 1.5px dashed rgba(34,197,94,.4); flex-direction: row; align-items: center; gap: 7px; color: #15803d; }
 .m-gap-txt { font-size: 13px; font-weight: 700; }
 .m-gap-sub { font-size: 11px; opacity: .7; margin-left: auto; font-family: 'DM Mono', monospace; }
 
 .m-empty { padding: 16px 13px; text-align: center; font-size: 12px; color: var(--muted); font-style: italic; }
 
-/* Prestataire separator */
-.prest-sep { display: flex; align-items: center; gap: 10px; margin: 16px 2px 10px; }
-.prest-sep-line { flex: 1; height: 1px; background: var(--border-strong); }
-.prest-sep-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.prest-sep { display: flex; align-items: center; gap: 10px; margin: 16px 0 10px; }
+.prest-sep-line { flex: 1; height: 1px; background: var(--border-strong, rgba(0,0,0,.13)); }
+.prest-sep-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); white-space: nowrap; }
 
-/* Loading */
-.loading { text-align: center; padding: 3rem; color: var(--muted); font-size: 13px; }
-.spinner { width: 28px; height: 28px; border: 2px solid rgba(0,0,0,.1); border-top-color: var(--black); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 12px; }
-@keyframes spin { to { transform: rotate(360deg); } }
+/* ── LOADING ── */
+.loading { text-align: center; padding: 2.5rem; color: var(--muted); font-size: 13px; }
 
-/* Legend */
-.legend { display: flex; gap: 14px; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 14px; padding: 10px; background: var(--white); border: 1px solid var(--border); border-radius: 10px; }
-.lg { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
-.lg-sw { width: 18px; height: 12px; border-radius: 3px; flex-shrink: 0; }
-.lg-rdv { background: #ddeeff; border-left: 3px solid #2d7dd2; }
-.lg-block { background: repeating-linear-gradient(135deg, #d6d6d1, #d6d6d1 3px, #c9c9c4 3px, #c9c9c4 6px); border: 1px solid #b4b4ae; }
-.lg-free { background: rgba(34,197,94,.07); border: 1.5px dashed rgba(34,197,94,.5); }
+/* ── LEGEND ── */
+#legend { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; padding: 0 2px; }
+.leg-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted); }
+.leg-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 
-@media (max-width: 720px) {
-  .cards { grid-template-columns: repeat(5, 1fr); }
-  .date-label { min-width: 150px; font-size: 13px; }
-  main { padding: 12px 10px 40px; }
+/* ── RESPONSIVE ── */
+@media (max-width: 780px) {
+  .grid-view { display: none; }
+  .mobile-view { display: block; }
+  .cards { grid-template-columns: repeat(3, 1fr); }
+  #legend { display: none; }
+  .dd { min-width: 150px; font-size: 13px; }
 }
-@media (max-width: 440px) {
-  .cards { grid-template-columns: repeat(4, 1fr); }
-  .card-num { font-size: 15px; }
+@media (max-width: 400px) {
+  .cards { grid-template-columns: repeat(3, 1fr); }
+  .dd { min-width: 130px; font-size: 12px; }
 }
 </style>
 </head>
@@ -188,10 +185,10 @@ main { max-width: 1300px; margin: 0 auto; padding: 14px 12px 40px; }
 
 <main>
   <div class="nav">
-    <div class="date-nav">
-      <button class="btn" onclick="go(-1)">&#8249;</button>
-      <div class="date-label" id="dlabel">—</div>
-      <button class="btn" onclick="go(1)">&#8250;</button>
+    <div class="dn">
+      <button class="btn" onclick="go(-1)">&#8592;</button>
+      <div class="dd" id="dlabel">—</div>
+      <button class="btn" onclick="go(1)">&#8594;</button>
     </div>
     <button class="btn-today" onclick="goToday()">Aujourd'hui</button>
   </div>
@@ -199,24 +196,17 @@ main { max-width: 1300px; margin: 0 auto; padding: 14px 12px 40px; }
   <div id="errzone"></div>
   <div class="cards" id="cards"></div>
 
-  <!-- DESKTOP -->
-  <div class="desktop-grid">
-    <div class="dg-wrap">
-      <div class="dg-scroll" id="dgscroll">
-        <div class="dg-inner" id="dginner"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
-      </div>
+  <!-- VUE DESKTOP -->
+  <div class="grid-view">
+    <div class="cal-wrap">
+      <div id="calgrid"><div class="loading">Chargement...</div></div>
     </div>
+    <div id="legend"></div>
   </div>
 
-  <!-- MOBILE -->
-  <div class="mobile-list" id="mobilelist">
-    <div class="loading"><div class="spinner"></div>Chargement des agendas...</div>
-  </div>
-
-  <div class="legend">
-    <div class="lg"><div class="lg-sw lg-rdv"></div>Rendez-vous</div>
-    <div class="lg"><div class="lg-sw lg-block"></div>Indisponible</div>
-    <div class="lg"><div class="lg-sw lg-free"></div>Créneau libre</div>
+  <!-- VUE MOBILE -->
+  <div class="mobile-view" id="mobile-view">
+    <div class="loading">Chargement...</div>
   </div>
 </main>
 
@@ -246,19 +236,10 @@ const BARBERS = [
 ];
 
 const FIRST_PREST = BARBERS.findIndex(b => b.prest);
-const H0 = 9, H1 = 20;
+const H0 = 9, H1 = 20, SM = 30, SH = 28;
 const TOTAL_MIN = (H1 - H0) * 60;
-let cur = new Date();
+let cur  = new Date();
 let cals = {};
-
-const f = n => String(n).padStart(2,'0');
-const fmtTime = d => `${f(d.getHours())}:${f(d.getMinutes())}`;
-function fmtDur(mins) {
-  if (mins < 60) return `${mins} min`;
-  const h = Math.floor(mins/60), m = mins%60;
-  return m === 0 ? `${h}h` : `${h}h${f(m)}`;
-}
-const minOfDay = d => (d.getHours()-H0)*60 + d.getMinutes();
 
 function parseD(s) {
   if (!s) return null;
@@ -268,19 +249,15 @@ function parseD(s) {
 }
 
 function parseIcal(txt) {
-  txt = txt.replace(/\r?\n[ \t]/g, '');
   return txt.split('BEGIN:VEVENT').slice(1).reduce((acc, b) => {
     if (/STATUS:CANCELLED/.test(b)) return acc;
-    const sum = (b.match(/^SUMMARY:(.+)$/m)||[])[1] || '';
+    const sum = (b.match(/^SUMMARY:(.+)$/m)||[])[1] || 'RDV';
     const st  = parseD((b.match(/^DTSTART[^:\r\n]*:(.+)$/m)||[])[1]);
     const en  = parseD((b.match(/^DTEND[^:\r\n]*:(.+)$/m)||[])[1]);
     if (!st || !en || isNaN(st)) return acc;
-    const service = ((b.match(/^X-SERVICE-NAME:(.+)$/m)||[])[1] || '').trim();
+    const label     = sum.replace(/^RDV Barber & Co\s*[-–]?\s*/i,'').trim() || 'RDV';
     const isRealRdv = b.includes('X-SERVICE-NAME:');
-    const bookedOnline = /X-BOOKED-ONLINE:\s*true/i.test(b);
-    let label = service || sum.replace(/^RDV Barber & Co\s*[-–]?\s*/i,'').trim();
-    if (!label) label = 'RDV';
-    acc.push({ st, en, label, service, isRealRdv, bookedOnline });
+    acc.push({ st, en, label, isRealRdv });
     return acc;
   }, []);
 }
@@ -294,7 +271,7 @@ async function fetchOne(url) {
       if (txt.includes('BEGIN:VCALENDAR')) return txt;
     } catch (_) { continue; }
   }
-  throw new Error('fail');
+  throw new Error('Proxies failed');
 }
 
 async function fetchAll() {
@@ -306,7 +283,7 @@ async function fetchAll() {
   const ko = results.filter(r => r.status === 'rejected');
   if (ko.length) {
     document.getElementById('errzone').innerHTML =
-      `<div class="err-banner">${ko.length === BARBERS.length ? 'Impossible de charger les agendas. Vérifie ta connexion.' : `${ko.length} agenda(s) non chargé(s).`}</div>`;
+      `<div class="err-banner">${ko.length === BARBERS.length ? 'Impossible de charger les agendas.' : `${ko.length} agenda(s) non chargé(s).`}</div>`;
   }
   BARBERS.forEach((_, i) => { if (!cals[i]) cals[i] = []; });
 }
@@ -317,6 +294,8 @@ function dayEvs(bi) {
 }
 function realRdv(bi) { return dayEvs(bi).filter(e => e.isRealRdv); }
 function blockedSlots(bi) { return dayEvs(bi).filter(e => !e.isRealRdv); }
+
+const minOfDay = d => (d.getHours()-H0)*60 + d.getMinutes();
 
 function getWorkingWindow(bi) {
   const evs = dayEvs(bi);
@@ -331,18 +310,19 @@ function isOpen(bi) {
   const evs = dayEvs(bi);
   if (!evs.length) return false;
   if (evs.some(e => e.isRealRdv)) return true;
+  // Que des blocs : fermé si quasi toute la journée est bloquée
   const win = getWorkingWindow(bi);
   if (!win) return false;
   let blocked = 0;
   blockedSlots(bi).forEach(ev => {
-    const s = Math.max(minOfDay(ev.st), win.start);
-    const e = Math.min(minOfDay(ev.en), win.end);
-    if (e > s) blocked += (e - s);
+    const a = Math.max(minOfDay(ev.st), win.start);
+    const b = Math.min(minOfDay(ev.en), win.end);
+    if (b > a) blocked += (b - a);
   });
   return blocked / (win.end - win.start) < 0.9;
 }
 
-// Construit la séquence chronologique : rdv / bloc / trou
+// Séquence chronologique d'une journée : rdv / bloc / trou libre
 function buildSegments(bi) {
   const win = getWorkingWindow(bi);
   if (!win) return [];
@@ -350,7 +330,6 @@ function buildSegments(bi) {
     ...realRdv(bi).map(e => ({ type:'rdv', s:minOfDay(e.st), e:minOfDay(e.en), ev:e })),
     ...blockedSlots(bi).map(e => ({ type:'block', s:minOfDay(e.st), e:minOfDay(e.en) })),
   ].sort((a,b) => a.s - b.s || a.e - b.e);
-
   const segs = [];
   let cursor = win.start;
   for (const it of items) {
@@ -363,24 +342,127 @@ function buildSegments(bi) {
   return segs.filter(s => s.e - s.s >= 5);
 }
 
+const f = n => String(n).padStart(2,'0');
+function fmtTime(d) { return `${f(d.getHours())}:${f(d.getMinutes())}`; }
+function fmtDur(mins) {
+  if (mins < 60) return `${mins} min`;
+  const h = Math.floor(mins/60), m = mins%60;
+  return m === 0 ? `${h}h` : `${h}h${f(m)}`;
+}
 const m2t = m => `${f(H0 + Math.floor(m/60))}:${f(m%60)}`;
 
 // ── CARDS ──
 function renderCards() {
   document.getElementById('cards').innerHTML = BARBERS.map((b, i) => {
-    const open = isOpen(i), rdvs = realRdv(i);
+    const open = isOpen(i);
+    const rdvs = realRdv(i);
     return `<div class="card${b.prest?' prest':''}">
       <div class="card-bar" style="background:${b.color}"></div>
       <div class="card-name" style="color:${b.color}">${b.name}</div>
-      <div class="badge ${open?'badge-open':'badge-closed'}"><div class="bdot ${open?'bdot-o':'bdot-c'}"></div>${open?'Ouvert':'Fermé'}</div>
+      <div class="badge ${open?'badge-open':'badge-closed'}">
+        <div class="bdot ${open?'bdot-open':'bdot-closed'}"></div>
+        ${open?'Ouvert':'Fermé'}
+      </div>
       ${open ? `<div class="card-num" style="color:${b.color}">${rdvs.length}</div><div class="card-sub">rdv</div>` : ''}
     </div>`;
   }).join('');
 }
 
-// ── MOBILE LIST ──
+// ── DESKTOP GRID ──
+function renderGrid() {
+  const grid = document.getElementById('calgrid');
+  const N    = BARBERS.length;
+  const cols = `44px repeat(${N}, minmax(0,1fr))`;
+  const totalS = (H1 - H0) * (60 / SM);
+  grid.innerHTML = '';
+
+  const head = document.createElement('div');
+  head.className = 'cal-head';
+  head.style.gridTemplateColumns = cols;
+  head.appendChild(Object.assign(document.createElement('div'), {className:'cal-head-cell'}));
+  BARBERS.forEach((b, i) => {
+    const hc = document.createElement('div');
+    hc.className = 'cal-head-cell' + (i===FIRST_PREST?' sep':'');
+    hc.innerHTML = `<div>${b.name}</div><div class="cal-head-bar" style="background:${b.color}"></div>`;
+    head.appendChild(hc);
+  });
+  grid.appendChild(head);
+
+  for (let s = 0; s < totalS; s++) {
+    const min = s * SM, h = H0 + Math.floor(min/60), m = min%60;
+    const row = document.createElement('div');
+    row.className = 'cal-row';
+    row.style.gridTemplateColumns = cols;
+    const tc = document.createElement('div');
+    tc.className = 'tc';
+    tc.textContent = m === 0 ? `${h}h` : '';
+    row.appendChild(tc);
+    BARBERS.forEach((b, bi) => {
+      const cell = document.createElement('div');
+      cell.className = 'slot' + (m===0?' h':'') + (bi===FIRST_PREST?' sep':'');
+      const op = isOpen(bi);
+
+      // RDV clients
+      realRdv(bi).forEach(ev => {
+        const esm = (ev.st.getHours()-H0)*60+ev.st.getMinutes();
+        const eem = (ev.en.getHours()-H0)*60+ev.en.getMinutes();
+        if (esm < min+SM && eem > min && esm >= min) {
+          const dur = Math.max(eem-esm, SM);
+          const a = document.createElement('div');
+          a.className = 'appt';
+          a.style.cssText = `background:${b.bg};border-left:2.5px solid ${b.color};height:${Math.max((dur/SM)*SH-2,SH-2)}px`;
+          a.innerHTML = `<span class="appt-n" style="color:${b.text}">${ev.label}</span>
+            <span class="appt-t" style="color:${b.text}">${fmtTime(ev.st)}–${fmtTime(ev.en)}</span>`;
+          cell.appendChild(a);
+        }
+      });
+
+      // Blocs grisés (indispo)
+      blockedSlots(bi).forEach(ev => {
+        const esm = (ev.st.getHours()-H0)*60+ev.st.getMinutes();
+        const eem = (ev.en.getHours()-H0)*60+ev.en.getMinutes();
+        if (esm < min+SM && eem > min && esm >= min) {
+          const dur = eem - esm;
+          const blk = document.createElement('div');
+          blk.className = 'blocked';
+          const bh = Math.max((dur/SM)*SH-2, SH-2);
+          blk.style.height = `${bh}px`;
+          blk.innerHTML = `<span style="font-size:10px">&#128274;</span>${bh>=30?`<span style="font-size:8px;font-weight:600;font-family:'DM Mono',monospace;margin-top:1px">${fmtDur(dur)}</span>`:''}`;
+          blk.title = `Indisponible — ${fmtTime(ev.st)}–${fmtTime(ev.en)}`;
+          cell.appendChild(blk);
+        }
+      });
+
+      // Trous libres (uniquement si ouvert)
+      if (op) {
+        const segs = buildSegments(bi);
+        segs.filter(sg => sg.type === 'gap' && sg.s >= min && sg.s < min+SM).forEach(g => {
+          const dur = g.e - g.s;
+          const gh = Math.max((dur/SM)*SH-2, SH-2);
+          const gp = document.createElement('div');
+          gp.className = 'gap';
+          gp.style.height = `${gh}px`;
+          gp.innerHTML = gh>=22 ? `<span style="font-size:8.5px;font-weight:700;font-family:'DM Mono',monospace;color:#15803d">${fmtDur(dur)}</span>` : '';
+          gp.title = `Libre ${fmtDur(dur)}`;
+          cell.appendChild(gp);
+        });
+      }
+
+      row.appendChild(cell);
+    });
+    grid.appendChild(row);
+  }
+
+  document.getElementById('legend').innerHTML = BARBERS.map(b =>
+    `<div class="leg-item"><div class="leg-dot" style="background:${b.color}"></div>${b.name}${b.prest?' <span style="opacity:.5">(prest.)</span>':''}</div>`
+  ).join('');
+}
+
+// ── MOBILE : vue verticale par barbier ──
 function renderMobile() {
+  const wrap = document.getElementById('mobile-view');
   let html = '';
+
   BARBERS.forEach((b, bi) => {
     if (bi === FIRST_PREST) {
       html += `<div class="prest-sep"><div class="prest-sep-line"></div><div class="prest-sep-label">Prestataires</div><div class="prest-sep-line"></div></div>`;
@@ -392,11 +474,8 @@ function renderMobile() {
     if (!open) {
       html += `<div class="m-barber${b.prest?' prest':''}">
         <div class="m-closed">
-          <div class="m-closed-l">
-            <div class="m-bdot" style="background:${b.color};opacity:.5"></div>
-            <div class="m-closed-name">${b.name}</div>
-          </div>
-          <div class="m-bbadge badge-closed"><div class="bdot bdot-c"></div>${cur.getDay()===0?'Fermé':'Absent'}</div>
+          <div class="m-closed-l"><div class="m-bdot" style="background:${b.color};opacity:.5"></div><div class="m-closed-name">${b.name}</div></div>
+          <div class="m-badge badge-closed"><div class="bdot bdot-closed"></div>${cur.getDay()===0?'Fermé':'Absent'}</div>
         </div>
       </div>`;
       return;
@@ -405,34 +484,29 @@ function renderMobile() {
     const segs = buildSegments(bi);
     let body = '';
     if (!segs.length) {
-      body = `<div class="m-empty">Aucune information disponible</div>`;
+      body = `<div class="m-empty">Aucune information</div>`;
     } else {
       body = `<div class="m-day">`;
       segs.forEach(sg => {
         const dur = sg.e - sg.s;
         if (sg.type === 'rdv') {
           const ev = sg.ev;
-          const lock = !ev.bookedOnline ? `<span class="m-rdv-lock">&#128274;</span>` : '';
           body += `<div class="m-seg">
             <div class="m-seg-time">${m2t(sg.s)}</div>
             <div class="m-seg-body m-rdv" style="background:${b.bg};color:${b.text}">
-              <div class="m-rdv-top">${lock}<span class="m-rdv-service">${ev.label}</span></div>
+              <div class="m-rdv-service">${ev.label}</div>
               <div class="m-rdv-meta">${fmtTime(ev.st)}–${fmtTime(ev.en)} · ${fmtDur(dur)}</div>
             </div>
           </div>`;
         } else if (sg.type === 'block') {
           body += `<div class="m-seg">
             <div class="m-seg-time">${m2t(sg.s)}</div>
-            <div class="m-seg-body m-block">
-              <div class="m-block-row"><span>&#128274;</span><span class="m-block-txt">Indisponible</span><span class="m-block-dur">${fmtDur(dur)}</span></div>
-            </div>
+            <div class="m-seg-body m-block"><span>&#128274;</span><span class="m-block-txt">Indisponible</span><span class="m-block-dur">${fmtDur(dur)}</span></div>
           </div>`;
         } else {
           body += `<div class="m-seg">
             <div class="m-seg-time">${m2t(sg.s)}</div>
-            <div class="m-seg-body m-gap">
-              <div class="m-gap-row"><span class="m-gap-icon">✓</span><span class="m-gap-txt">${fmtDur(dur)} libre</span><span class="m-gap-sub">${m2t(sg.s)}–${m2t(sg.e)}</span></div>
-            </div>
+            <div class="m-seg-body m-gap"><span class="m-gap-txt">${fmtDur(dur)} libre</span><span class="m-gap-sub">${m2t(sg.s)}–${m2t(sg.e)}</span></div>
           </div>`;
         }
       });
@@ -441,100 +515,33 @@ function renderMobile() {
 
     html += `<div class="m-barber${b.prest?' prest':''}">
       <div class="m-bhead">
-        <div class="m-bhead-l">
-          <div class="m-bdot" style="background:${b.color}"></div>
-          <div class="m-bname">${b.name}</div>
-        </div>
-        <div class="m-bhead-r">
-          <span class="m-bcount">${rdvs.length} rdv</span>
-          <div class="m-bbadge badge-open"><div class="bdot bdot-o"></div>Ouvert</div>
-        </div>
+        <div class="m-bhead-l"><div class="m-bdot" style="background:${b.color}"></div><div class="m-bname">${b.name}</div></div>
+        <div class="m-bhead-r"><span class="m-bcount">${rdvs.length} rdv</span><div class="m-badge badge-open"><div class="bdot bdot-open"></div>Ouvert</div></div>
       </div>
       ${body}
     </div>`;
   });
-  document.getElementById('mobilelist').innerHTML = html;
+
+  wrap.innerHTML = html;
 }
 
-// ── DESKTOP GRID (fit to screen) ──
-function renderDesktop() {
-  const scroll = document.getElementById('dgscroll');
-  // Hauteur dispo → fit tout le jour
-  const availH = Math.max(scroll.clientHeight - 46, 360);
-  const pxPerHour = Math.max(availH / ((TOTAL_MIN/60)), 38);
-  const yP = m => (m/60) * pxPerHour;
-  const bodyH = (TOTAL_MIN/60) * pxPerHour;
-
-  let timeLabels = '';
-  for (let hr = H0; hr <= H1; hr++) timeLabels += `<div class="dg-tlabel" style="top:${yP((hr-H0)*60)}px">${hr}:00</div>`;
-
-  let gridlines = '';
-  for (let hr = H0; hr <= H1; hr++) {
-    gridlines += `<div class="dg-line" style="top:${yP((hr-H0)*60)}px"></div>`;
-    if (hr < H1) gridlines += `<div class="dg-line half" style="top:${yP((hr-H0)*60+30)}px"></div>`;
-  }
-
-  let cols = `<div class="dg-time"><div class="dg-head corner"></div><div class="dg-tbody" style="height:${bodyH}px">${timeLabels}</div></div>`;
-
-  const nowMin = (new Date().getHours()-H0)*60 + new Date().getMinutes();
-  const isToday = cur.toDateString() === new Date().toDateString();
-
-  BARBERS.forEach((b, bi) => {
-    const open = isOpen(bi), win = getWorkingWindow(bi);
-    const segs = buildSegments(bi);
-    let inner = gridlines;
-
-    if (win && open) {
-      if (win.start > 0) inner += `<div class="dg-closed" style="top:0;height:${yP(win.start)}px"></div>`;
-      if (win.end < TOTAL_MIN) inner += `<div class="dg-closed" style="top:${yP(win.end)}px;height:${yP(TOTAL_MIN)-yP(win.end)}px"></div>`;
-    } else {
-      inner += `<div class="dg-closed" style="top:0;height:${bodyH}px"></div><div class="dg-clabel">${cur.getDay()===0?'Fermé':'Absent'}</div>`;
-    }
-
-    if (open) segs.forEach(sg => {
-      const top = yP(sg.s), height = yP(sg.e) - top, dur = sg.e - sg.s;
-      if (sg.type === 'rdv') {
-        const ev = sg.ev;
-        const lock = !ev.bookedOnline ? `<span style="position:absolute;top:3px;right:4px;font-size:8px;opacity:.6">&#128274;</span>` : '';
-        inner += `<div class="dg-evt" style="top:${top}px;height:${Math.max(height,16)}px;background:${b.bg};border-left:3px solid ${b.color};color:${b.text}" title="${ev.label} — ${fmtTime(ev.st)}–${fmtTime(ev.en)}">${lock}<div class="dg-evt-s">${ev.label}</div>${height>=28?`<div class="dg-evt-t">${fmtTime(ev.st)}–${fmtTime(ev.en)}</div>`:''}</div>`;
-      } else if (sg.type === 'block') {
-        inner += `<div class="dg-block" style="top:${top}px;height:${height}px"><div class="dg-block-i"><span style="font-size:10px">&#128274;</span>${height>=32?`<span style="font-size:8px;font-weight:600;font-family:'DM Mono',monospace">${fmtDur(dur)}</span>`:''}</div></div>`;
-      } else {
-        inner += `<div class="dg-gap" style="top:${top}px;height:${height}px">${height>=24?`<div class="dg-gap-t">${fmtDur(dur)}</div>`:''}</div>`;
-      }
-    });
-
-    if (isToday && nowMin >= 0 && nowMin <= TOTAL_MIN) inner += `<div class="dg-now" style="top:${yP(nowMin)}px"></div>`;
-
-    const badge = open ? `<span class="dg-hbadge badge-open">Ouvert</span>` : `<span class="dg-hbadge badge-closed">Fermé</span>`;
-    cols += `<div class="dg-col ${bi===FIRST_PREST?'psep':''}"><div class="dg-head"><div class="dg-hname"><span class="dg-hbar" style="background:${b.color}"></span>${b.name}</div>${badge}</div><div class="dg-body" style="height:${bodyH}px">${inner}</div></div>`;
-  });
-
-  document.getElementById('dginner').innerHTML = cols;
-
-  // Scroll desktop sur l'heure actuelle
-  if (isToday) scroll.scrollTop = Math.max(0, yP(nowMin) - 80);
+function setLabel() {
+  document.getElementById('dlabel').textContent =
+    cur.toLocaleDateString('fr-FR', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
 }
 
 function render() {
-  document.getElementById('dlabel').textContent =
-    cur.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+  setLabel();
   renderCards();
+  renderGrid();
   renderMobile();
-  renderDesktop();
 }
 
 function go(d) { cur = new Date(cur); cur.setDate(cur.getDate()+d); render(); }
 function goToday() { cur = new Date(); render(); }
 
-window.addEventListener('resize', () => { renderDesktop(); });
-
-(async () => {
-  document.getElementById('dlabel').textContent =
-    cur.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
-  await fetchAll();
-  render();
-})();
+setLabel();
+fetchAll().then(render);
 </script>
 </body>
 </html>
