@@ -2,267 +2,231 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Planning — Barber&Co</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 
 :root {
-  --black: #111;
-  --surface: #f6f5f2;
+  --black: #131312;
+  --surface: #f4f3f0;
   --white: #fff;
-  --border: rgba(0,0,0,.09);
-  --muted: #888;
+  --border: rgba(0,0,0,.08);
+  --border-strong: rgba(0,0,0,.14);
+  --muted: #8a8a84;
+  --now: #e23b3b;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--black); }
+html, body { height: 100%; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--surface);
+  color: var(--black);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
 
 /* ── HEADER ── */
 header {
   background: var(--white); border-bottom: 1px solid var(--border);
-  padding: 0 1.5rem; height: 54px;
+  padding: 0 16px; height: 52px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 99;
 }
 .logo { display: flex; align-items: center; gap: 9px; }
-.lm { width: 28px; height: 28px; background: var(--black); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; }
-.lt { font-size: 14px; font-weight: 600; }
+.lm { width: 28px; height: 28px; background: var(--black); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; }
+.lt { font-size: 14px; font-weight: 700; letter-spacing: -.01em; }
 .ls { font-size: 10px; color: var(--muted); }
 .live { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
 .ld { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-/* ── MAIN ── */
-main { max-width: 1300px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
-
-.err-banner { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 10px 14px; margin-bottom: 10px; font-size: 12px; color: #991b1b; }
-
-/* ── NAV ── */
-.nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 8px; }
-.dn { display: flex; align-items: center; gap: 7px; }
-.btn { background: var(--white); border: 1px solid var(--border); border-radius: 7px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; color: var(--muted); transition: all .15s; }
+/* ── TOOLBAR ── */
+.toolbar {
+  background: var(--white); border-bottom: 1px solid var(--border);
+  padding: 8px 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.date-nav { display: flex; align-items: center; gap: 6px; }
+.btn {
+  background: var(--white); border: 1px solid var(--border-strong); border-radius: 8px;
+  height: 34px; min-width: 34px; padding: 0 8px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 15px; color: #555; transition: all .12s;
+  font-family: 'DM Sans', sans-serif;
+}
 .btn:hover { background: var(--surface); color: var(--black); }
-.dd { font-size: 14px; font-weight: 500; min-width: 200px; text-align: center; text-transform: capitalize; }
-.btn-today { background: var(--black); color: #fff; border: none; border-radius: 7px; padding: 7px 16px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity .15s; }
-.btn-today:hover { opacity: .8; }
+.btn:active { transform: scale(.95); }
+.date-label {
+  font-size: 13.5px; font-weight: 600; text-transform: capitalize;
+  min-width: 130px; text-align: center; padding: 0 4px;
+}
+.toolbar-right { display: flex; align-items: center; gap: 6px; }
+.btn-today {
+  background: var(--black); color: #fff; border: none; border-radius: 8px;
+  height: 34px; padding: 0 14px; font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-today:active { transform: scale(.96); }
+.zoom-group { display: flex; gap: 0; border: 1px solid var(--border-strong); border-radius: 8px; overflow: hidden; }
+.zoom-group .btn { border: none; border-radius: 0; height: 32px; min-width: 32px; }
+.zoom-group .btn:first-child { border-right: 1px solid var(--border); }
 
-/* ── STATUS CARDS ── */
-.cards { display: grid; grid-template-columns: repeat(9, minmax(0,1fr)); gap: 6px; margin-bottom: 1.25rem; }
-.card {
-  background: var(--white); border: 1px solid var(--border); border-radius: 10px;
-  padding: 10px 6px; text-align: center; position: relative; overflow: hidden;
-}
-.card.prest { border-style: dashed; }
-.card-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 10px 10px 0 0; }
-.card-name { font-size: 10px; font-weight: 600; margin: 3px 0 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.badge { display: inline-flex; align-items: center; gap: 3px; font-size: 9px; font-weight: 500; padding: 2px 6px; border-radius: 20px; margin-bottom: 4px; }
-.badge-open { background: #dcfce7; color: #15803d; }
-.badge-closed { background: #f1f5f9; color: #94a3b8; }
-.bdot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
-.bdot-open { background: #22c55e; }
-.bdot-closed { background: #cbd5e1; }
-.card-num { font-size: 18px; font-weight: 600; font-family: 'DM Mono', monospace; line-height: 1; }
-.card-sub { font-size: 9px; color: var(--muted); margin-top: 1px; }
+/* ── ERROR ── */
+.err-banner { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 8px 12px; margin: 8px 12px 0; font-size: 12px; color: #991b1b; }
 
-/* ── DESKTOP GRID VIEW ── */
-.grid-view { display: block; }
-.cal-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-.cal-head {
-  display: grid;
-  grid-template-columns: 44px repeat(9, minmax(0,1fr));
-  background: var(--surface); border-bottom: 1px solid var(--border);
-}
-.cal-head-cell { padding: 7px 3px; text-align: center; border-right: 1px solid var(--border); font-size: 10px; font-weight: 600; }
-.cal-head-cell:last-child { border-right: none; }
-.cal-head-cell.sep { border-left: 2px solid rgba(0,0,0,.12); }
-.cal-head-bar { height: 2px; border-radius: 2px; margin: 3px auto 0; width: 16px; }
-.cal-row { display: grid; grid-template-columns: 44px repeat(9, minmax(0,1fr)); }
-.cal-row:last-child .slot, .cal-row:last-child .tc { border-bottom: none; }
-.tc {
-  border-right: 1px solid var(--border); border-bottom: 1px solid rgba(0,0,0,.05);
-  height: 16px; display: flex; align-items: flex-start; justify-content: flex-end;
-  padding: 2px 5px 0; font-size: 9.5px; color: var(--muted);
-  font-family: 'DM Mono', monospace; background: var(--surface);
-}
-.slot { border-right: 1px solid var(--border); border-bottom: 1px solid rgba(0,0,0,.04); height: 16px; position: relative; }
-.slot:last-child { border-right: none; }
-.slot.h { border-bottom: 1px solid rgba(0,0,0,.12) !important; }
-.slot.half { border-bottom: 1px dashed rgba(0,0,0,.08) !important; }
-.slot.sep { border-left: 2px solid rgba(0,0,0,.12); }
-.appt {
-  position: absolute; left: 2px; right: 2px; top: 1px;
-  border-radius: 4px; padding: 3px 5px; font-size: 9.5px; line-height: 1.25; overflow: hidden; z-index: 2;
-}
-.appt-n { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; margin-bottom: 1px; }
-.appt-t { font-size: 8.5px; opacity: .75; font-family: 'DM Mono', monospace; }
-.appt-dur { font-size: 8px; opacity: .55; font-family: 'DM Mono', monospace; font-weight: 500; margin-top: 1px; }
-.gap {
-  position: absolute; left: 3px; right: 3px;
-  border-radius: 3px;
-  background: repeating-linear-gradient(45deg, rgba(34,197,94,.06), rgba(34,197,94,.06) 5px, rgba(34,197,94,.12) 5px, rgba(34,197,94,.12) 10px);
-  border: 1px dashed rgba(34,197,94,.3);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 600; font-family: 'DM Mono', monospace;
-  color: #15803d; z-index: 1;
-  pointer-events: none;
-}
-.blocked {
-  position: absolute; left: 1px; right: 1px; top: 0;
-  background: repeating-linear-gradient(135deg, #d4d4d0, #d4d4d0 6px, #c8c8c4 6px, #c8c8c4 12px);
-  border: 1px solid #a8a8a4;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 600; font-family: 'DM Mono', monospace;
-  color: rgba(0,0,0,.55); z-index: 2;
-  pointer-events: none;
-  text-shadow: 0 1px 0 rgba(255,255,255,.5);
-}
-
-/* ── MOBILE TIMELINE VIEW ── */
-.mobile-view { display: none; }
-
-.barber-row {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  margin-bottom: 8px;
-  overflow: hidden;
-}
-.barber-row.prest { border-style: dashed; }
-
-.barber-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
-}
-.barber-header-left { display: flex; align-items: center; gap: 8px; }
-.barber-color-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.barber-header-name { font-size: 13px; font-weight: 600; }
-.barber-header-right { display: flex; align-items: center; gap: 6px; }
-.badge-sm { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 20px; display: flex; align-items: center; gap: 3px; }
-
-/* Timeline horizontale */
-.timeline-wrap {
-  padding: 10px 12px;
-  overflow: hidden;
-}
-.timeline-hours {
-  display: flex;
-  margin-bottom: 4px;
-}
-.tl-hour-label {
-  font-size: 8.5px;
-  color: var(--muted);
-  font-family: 'DM Mono', monospace;
-  flex-shrink: 0;
-}
-.timeline-track {
+/* ── PLANNING SCROLL ── */
+.planning-scroll {
+  flex: 1;
+  overflow: auto;
   position: relative;
-  height: 38px;
-  background: #f4f3f0;
-  border-radius: 6px;
-  overflow: hidden;
-  border: 1px solid rgba(0,0,0,.06);
+  -webkit-overflow-scrolling: touch;
+  background: var(--surface);
 }
-.tl-appt {
-  position: absolute;
-  top: 2px;
-  height: calc(100% - 4px);
-  border-radius: 5px;
-  padding: 0 5px;
+.planning-grid {
   display: flex;
-  align-items: center;
-  overflow: hidden;
-  min-width: 2px;
-  z-index: 3;
+  width: max-content;
+  min-width: 100%;
+  position: relative;
 }
-.tl-blocked {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  background: repeating-linear-gradient(135deg, #d4d4d0, #d4d4d0 5px, #c8c8c4 5px, #c8c8c4 10px);
-  border: 1px solid #a8a8a4;
-  z-index: 2;
+
+/* Time column */
+.col-time {
+  position: sticky; left: 0; z-index: 25;
+  flex: 0 0 46px;
+  background: var(--surface);
+  box-shadow: 1px 0 0 var(--border);
 }
-.tl-gap {
-  position: absolute;
-  top: 2px;
-  height: calc(100% - 4px);
-  border-radius: 4px;
-  background: repeating-linear-gradient(45deg, rgba(34,197,94,.08), rgba(34,197,94,.08) 4px, rgba(34,197,94,.18) 4px, rgba(34,197,94,.18) 8px);
-  border: 1px dashed rgba(34,197,94,.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 8.5px;
-  font-weight: 600;
+.col-time .col-head { background: var(--surface); }
+.time-body { position: relative; }
+.time-label {
+  position: absolute; right: 6px;
+  font-size: 10px; color: var(--muted);
   font-family: 'DM Mono', monospace;
-  color: #15803d;
-  z-index: 1;
-  overflow: hidden;
+  transform: translateY(-50%); font-weight: 500;
 }
-.tl-appt-text {
-  font-size: 9px;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.tl-closed {
-  padding: 8px 12px 10px;
-  font-size: 11px;
-  color: var(--muted);
-  font-style: italic;
-}
-.rdv-list {
-  padding: 0 12px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.rdv-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 8px;
-  border-radius: 7px;
-  font-size: 11px;
-}
-.rdv-time {
+.time-half {
+  position: absolute; right: 6px;
+  font-size: 8.5px; color: rgba(0,0,0,.22);
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  opacity: .7;
-  flex-shrink: 0;
-  min-width: 80px;
+  transform: translateY(-50%);
 }
-.rdv-label { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* Pas de RDV */
-.no-rdv { font-size: 11px; color: var(--muted); padding: 0 12px 10px; font-style: italic; }
-
-/* Séparateur prestataires */
-.prest-sep { display: flex; align-items: center; gap: 10px; margin: 14px 0 8px; }
-.prest-sep-line { flex: 1; height: 1px; background: var(--border); }
-.prest-sep-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); white-space: nowrap; }
-
-/* ── LOADING ── */
-.loading { text-align: center; padding: 2.5rem; color: var(--muted); font-size: 13px; }
-
-/* ── LEGEND ── */
-#legend { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; padding: 0 2px; }
-.leg-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted); }
-.leg-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 780px) {
-  .grid-view { display: none; }
-  .mobile-view { display: block; }
-  .cards { grid-template-columns: repeat(3, 1fr); }
-  #legend { display: none; }
-  .dd { min-width: 150px; font-size: 13px; }
+/* Barber columns */
+.col-barber {
+  flex: 1 0 130px; min-width: 130px;
+  border-right: 1px solid var(--border);
+  position: relative;
 }
-@media (max-width: 400px) {
-  .cards { grid-template-columns: repeat(3, 1fr); }
-  .dd { min-width: 130px; font-size: 12px; }
+.col-barber:last-child { border-right: none; }
+.col-barber.prest-first { border-left: 2.5px solid var(--border-strong); }
+
+/* Headers (sticky top) */
+.col-head {
+  position: sticky; top: 0; z-index: 15;
+  height: 48px; background: var(--white);
+  border-bottom: 1.5px solid var(--border-strong);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; padding: 4px;
+}
+.col-head.corner { z-index: 30; }
+.bh-top { display: flex; align-items: center; gap: 5px; }
+.bh-bar { width: 3px; height: 13px; border-radius: 2px; }
+.bh-name { font-size: 12.5px; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; max-width: 110px; overflow: hidden; text-overflow: ellipsis; }
+.bh-badge {
+  font-size: 8.5px; font-weight: 600; padding: 1px 7px; border-radius: 10px;
+  display: flex; align-items: center; gap: 3px; text-transform: uppercase; letter-spacing: .02em;
+}
+.bh-open { background: #dcfce7; color: #15803d; }
+.bh-closed { background: #f1f1ef; color: #9a9a94; }
+.bh-dot { width: 4px; height: 4px; border-radius: 50%; }
+.bh-dot-o { background: #22c55e; }
+.bh-dot-c { background: #c4c4be; }
+.bh-count { font-size: 9px; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+/* Column body */
+.col-body { position: relative; }
+
+/* Gridlines */
+.gridline { position: absolute; left: 0; right: 0; border-top: 1px solid var(--border); pointer-events: none; }
+.gridline.half { border-top: 1px dashed rgba(0,0,0,.05); }
+
+/* Closed zone */
+.closed-zone {
+  position: absolute; left: 0; right: 0;
+  background: repeating-linear-gradient(135deg, rgba(0,0,0,.025), rgba(0,0,0,.025) 6px, rgba(0,0,0,.05) 6px, rgba(0,0,0,.05) 12px);
+  pointer-events: none; z-index: 1;
+}
+
+/* Appointment */
+.evt {
+  position: absolute; left: 3px; right: 3px;
+  border-radius: 6px; overflow: hidden; z-index: 4;
+  padding: 4px 6px;
+  display: flex; flex-direction: column;
+  box-shadow: 0 1px 2px rgba(0,0,0,.08);
+}
+.evt-service { font-size: 11px; font-weight: 700; line-height: 1.15; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.evt-time { font-size: 9.5px; font-family: 'DM Mono', monospace; opacity: .8; margin-top: 1px; font-weight: 500; }
+.evt-dur { font-size: 8.5px; font-family: 'DM Mono', monospace; opacity: .55; margin-top: auto; font-weight: 500; }
+.evt-lock { position: absolute; top: 4px; right: 5px; font-size: 9px; opacity: .6; }
+
+/* Blocked slot */
+.blocked {
+  position: absolute; left: 2px; right: 2px;
+  background: repeating-linear-gradient(135deg, #cfcfca, #cfcfca 5px, #c2c2bc 5px, #c2c2bc 10px);
+  border: 1px solid #aeaea8; border-radius: 5px; z-index: 3;
+  display: flex; align-items: center; justify-content: center; pointer-events: none;
+}
+.blocked-inner { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(0,0,0,.5); text-shadow: 0 1px 0 rgba(255,255,255,.4); }
+.blocked-lock { font-size: 11px; }
+.blocked-txt { font-size: 8.5px; font-weight: 600; font-family: 'DM Mono', monospace; }
+
+/* Free gap */
+.gap {
+  position: absolute; left: 4px; right: 4px;
+  border-radius: 5px; background: rgba(34,197,94,.06);
+  border: 1px dashed rgba(34,197,94,.35); z-index: 2;
+  display: flex; align-items: center; justify-content: center; pointer-events: none;
+}
+.gap-txt { font-size: 9px; font-weight: 700; font-family: 'DM Mono', monospace; color: #15803d; text-align: center; line-height: 1.2; }
+
+/* Now line */
+.now-line { position: absolute; left: 0; right: 0; height: 0; border-top: 2px solid var(--now); z-index: 12; pointer-events: none; }
+.now-dot { position: absolute; left: -3px; top: -4px; width: 7px; height: 7px; border-radius: 50%; background: var(--now); }
+
+/* Closed full-day label */
+.col-closed-label {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%) rotate(-90deg);
+  font-size: 11px; font-weight: 600; color: rgba(0,0,0,.3);
+  white-space: nowrap; letter-spacing: .08em; text-transform: uppercase; z-index: 2; pointer-events: none;
+}
+
+/* Loading */
+.loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--muted); font-size: 13px; background: var(--surface); z-index: 50; }
+.spinner { width: 28px; height: 28px; border: 2px solid rgba(0,0,0,.1); border-top-color: var(--black); border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Legend bar */
+.legend-bar {
+  background: var(--white); border-top: 1px solid var(--border);
+  padding: 7px 12px; flex-shrink: 0;
+  display: flex; gap: 14px; align-items: center; justify-content: center; flex-wrap: wrap;
+}
+.lg { display: flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--muted); }
+.lg-sw { width: 16px; height: 11px; border-radius: 3px; flex-shrink: 0; }
+.lg-rdv { background: #ddeeff; border-left: 2.5px solid #2d7dd2; }
+.lg-block { background: repeating-linear-gradient(135deg, #cfcfca, #cfcfca 3px, #c2c2bc 3px, #c2c2bc 6px); border: 1px solid #aeaea8; }
+.lg-free { background: rgba(34,197,94,.06); border: 1px dashed rgba(34,197,94,.5); }
+
+@media (max-width: 720px) {
+  .planning-grid { width: max-content; min-width: 0; }
+  .col-barber { flex: 0 0 116px; min-width: 116px; }
+  .date-label { min-width: 108px; font-size: 12.5px; }
+  .legend-bar { gap: 10px; }
+  .lt { font-size: 13px; }
 }
 </style>
 </head>
@@ -276,32 +240,33 @@ main { max-width: 1300px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
   <div class="live"><div class="ld"></div>Live</div>
 </header>
 
-<main>
-  <div class="nav">
-    <div class="dn">
-      <button class="btn" onclick="go(-1)">&#8592;</button>
-      <div class="dd" id="dlabel">—</div>
-      <button class="btn" onclick="go(1)">&#8594;</button>
+<div class="toolbar">
+  <div class="date-nav">
+    <button class="btn" onclick="go(-1)">&#8249;</button>
+    <div class="date-label" id="dlabel">—</div>
+    <button class="btn" onclick="go(1)">&#8250;</button>
+  </div>
+  <div class="toolbar-right">
+    <div class="zoom-group">
+      <button class="btn" onclick="zoom(-1)" title="Dézoomer">&#8722;</button>
+      <button class="btn" onclick="zoom(1)" title="Zoomer">+</button>
     </div>
     <button class="btn-today" onclick="goToday()">Aujourd'hui</button>
   </div>
+</div>
 
-  <div id="errzone"></div>
-  <div class="cards" id="cards"></div>
+<div id="errzone"></div>
 
-  <!-- VUE DESKTOP -->
-  <div class="grid-view">
-    <div class="cal-wrap">
-      <div id="calgrid"><div class="loading">Chargement...</div></div>
-    </div>
-    <div id="legend"></div>
-  </div>
+<div class="planning-scroll" id="scroll">
+  <div class="planning-grid" id="grid"></div>
+  <div class="loading" id="loading"><div class="spinner"></div>Chargement des agendas...</div>
+</div>
 
-  <!-- VUE MOBILE -->
-  <div class="mobile-view" id="mobile-view">
-    <div class="loading">Chargement...</div>
-  </div>
-</main>
+<div class="legend-bar">
+  <div class="lg"><div class="lg-sw lg-rdv"></div>Rendez-vous</div>
+  <div class="lg"><div class="lg-sw lg-block"></div>Indisponible</div>
+  <div class="lg"><div class="lg-sw lg-free"></div>Créneau libre</div>
+</div>
 
 <script>
 const PROXIES = [
@@ -316,23 +281,37 @@ const BIZ_PRES = '-Ojf3BVliXAlXePawpoH';
 const KEY      = 'BWXFBLs3f4ezQjbNcape5SIzkdL8mAUL';
 
 const BARBERS = [
+  { name:'Jo',         cal:'-Oq5TPRWn96oT1FZwThF', biz:BIZ_EMP,  color:'#0d9488', bg:'#ccfbf1', text:'#0f5132' },
   { name:'Leandro',    cal:'-OWZzo6Y0Si8zhF6NoIP', biz:BIZ_EMP,  color:'#2d7dd2', bg:'#ddeeff', text:'#0a3d6e' },
   { name:'Djibril',    cal:'-OUELrMU0_orIe4PDWIT', biz:BIZ_EMP,  color:'#1a9268', bg:'#d2f5e8', text:'#0a4a35' },
   { name:'Melki',      cal:'-O40gs8Cttf16EyHx2LH', biz:BIZ_EMP,  color:'#c94f7a', bg:'#fce8f2', text:'#6b1c3c' },
   { name:'Noa',        cal:'-OVwo8a3v4_TLl597dH0', biz:BIZ_EMP,  color:'#b5700f', bg:'#fef0d0', text:'#5c380a' },
   { name:'BarberWill', cal:'-Mk2LVGQLBFAlH4z_plh', biz:BIZ_EMP,  color:'#5548b0', bg:'#eceafd', text:'#302880' },
   { name:'HairByNN',   cal:'-NtWD3xo8WYzcooGXWCd', biz:BIZ_EMP,  color:'#b83025', bg:'#fde8e6', text:'#6b1510' },
-  { name:'Jo',         cal:'-Oq5TPRWn96oT1FZwThF', biz:BIZ_EMP,  color:'#0d9488', bg:'#ccfbf1', text:'#134e4a' },
   { name:'Veny',       cal:'-Ok3wmlpVH1IS3ycKx2V', biz:BIZ_PRES, color:'#0891b2', bg:'#e0f2fe', text:'#0c4a6e', prest:true },
   { name:'Waggy',      cal:'-Ok3yGbboZmn-cXRPP4G', biz:BIZ_PRES, color:'#65a30d', bg:'#ecfccb', text:'#365314', prest:true },
   { name:'Mcken',      cal:'-Oo6JSRIXBL-RVhyIFqQ', biz:BIZ_PRES, color:'#9333ea', bg:'#f3e8ff', text:'#581c87', prest:true },
 ];
 
 const FIRST_PREST = BARBERS.findIndex(b => b.prest);
-const H0 = 9, H1 = 20, SM = 15, SH = 16;
+const H0 = 9, H1 = 20;
 const TOTAL_MIN = (H1 - H0) * 60;
+
+let pxPerHour = 72;
+const PX_MIN = 46, PX_MAX = 170;
+
 let cur  = new Date();
 let cals = {};
+
+const f = n => String(n).padStart(2,'0');
+const fmtTime = d => `${f(d.getHours())}:${f(d.getMinutes())}`;
+function formatDuration(mins) {
+  if (mins < 60) return `${mins}min`;
+  const h = Math.floor(mins/60), m = mins%60;
+  return m === 0 ? `${h}h` : `${h}h${f(m)}`;
+}
+const minOfDay = d => (d.getHours()-H0)*60 + d.getMinutes();
+const yPos = mins => (mins/60) * pxPerHour;
 
 function parseD(s) {
   if (!s) return null;
@@ -342,15 +321,19 @@ function parseD(s) {
 }
 
 function parseIcal(txt) {
+  txt = txt.replace(/\r?\n[ \t]/g, '');
   return txt.split('BEGIN:VEVENT').slice(1).reduce((acc, b) => {
     if (/STATUS:CANCELLED/.test(b)) return acc;
-    const sum = (b.match(/^SUMMARY:(.+)$/m)||[])[1] || 'RDV';
+    const sum = (b.match(/^SUMMARY:(.+)$/m)||[])[1] || '';
     const st  = parseD((b.match(/^DTSTART[^:\r\n]*:(.+)$/m)||[])[1]);
     const en  = parseD((b.match(/^DTEND[^:\r\n]*:(.+)$/m)||[])[1]);
     if (!st || !en || isNaN(st)) return acc;
-    const label     = sum.replace(/^RDV Barber & Co\s*[-–]?\s*/i,'').trim() || 'RDV';
+    const service = ((b.match(/^X-SERVICE-NAME:(.+)$/m)||[])[1] || '').trim();
     const isRealRdv = b.includes('X-SERVICE-NAME:');
-    acc.push({ st, en, label, isRealRdv });
+    const bookedOnline = /X-BOOKED-ONLINE:\s*true/i.test(b);
+    let label = service || sum.replace(/^RDV Barber & Co\s*[-–]?\s*/i,'').trim();
+    if (!label) label = 'RDV';
+    acc.push({ st, en, label, service, isRealRdv, bookedOnline });
     return acc;
   }, []);
 }
@@ -376,7 +359,7 @@ async function fetchAll() {
   const ko = results.filter(r => r.status === 'rejected');
   if (ko.length) {
     document.getElementById('errzone').innerHTML =
-      `<div class="err-banner">${ko.length === BARBERS.length ? 'Impossible de charger les agendas.' : `${ko.length} agenda(s) non chargé(s).`}</div>`;
+      `<div class="err-banner">${ko.length === BARBERS.length ? 'Impossible de charger les agendas. Vérifie ta connexion.' : `${ko.length} agenda(s) non chargé(s).`}</div>`;
   }
   BARBERS.forEach((_, i) => { if (!cals[i]) cals[i] = []; });
 }
@@ -386,368 +369,154 @@ function dayEvs(bi) {
   return (cals[bi]||[]).filter(e => e.st.toDateString() === d);
 }
 function realRdv(bi) { return dayEvs(bi).filter(e => e.isRealRdv); }
+function blockedSlots(bi) { return dayEvs(bi).filter(e => !e.isRealRdv); }
 
-// Tous les events sans service Planity sont des blocs grisés (absences, pauses, RDV manuels)
-function blockedSlots(bi) {
-  return dayEvs(bi).filter(e => !e.isRealRdv);
+function getWorkingWindow(bi) {
+  const evs = dayEvs(bi);
+  if (!evs.length) return null;
+  let s = Infinity, e = -Infinity;
+  evs.forEach(ev => { s = Math.min(s, minOfDay(ev.st)); e = Math.max(e, minOfDay(ev.en)); });
+  return { start: Math.max(s, 0), end: Math.min(e, TOTAL_MIN) };
 }
 
 function isOpen(bi) {
   if (cur.getDay() === 0) return false;
   const evs = dayEvs(bi);
-  if (evs.length === 0) return false;
-  // Si le barbier n'a QUE des blocs grisés et aucun RDV, il est considéré comme indisponible
-  // Sauf s'il y a au moins un créneau libre exploitable
-  const hasRealRdv = evs.some(e => e.isRealRdv);
-  if (hasRealRdv) return true;
-  // Pas de RDV mais des blocs : check s'il reste une fenêtre libre
+  if (!evs.length) return false;
+  if (evs.some(e => e.isRealRdv)) return true;
   const win = getWorkingWindow(bi);
   if (!win) return false;
-  const blocked = blockedSlots(bi).map(e => ({
-    s: (e.st.getHours()-H0)*60+e.st.getMinutes(),
-    e: (e.en.getHours()-H0)*60+e.en.getMinutes(),
-  })).sort((a,b) => a.s - b.s);
-  // Calcule le temps total bloqué dans la fenêtre
-  let totalBlocked = 0;
-  blocked.forEach(b => {
-    const s = Math.max(b.s, win.start);
-    const e = Math.min(b.e, win.end);
-    if (e > s) totalBlocked += (e - s);
+  let blocked = 0;
+  blockedSlots(bi).forEach(ev => {
+    const s = Math.max(minOfDay(ev.st), win.start);
+    const e = Math.min(minOfDay(ev.en), win.end);
+    if (e > s) blocked += (e - s);
   });
-  const winSize = win.end - win.start;
-  // Si plus de 90% de la fenêtre est bloquée, on considère qu'il est indispo
-  return totalBlocked / winSize < 0.9;
+  return blocked / (win.end - win.start) < 0.9;
 }
 
-const f = n => String(n).padStart(2,'0');
-function fmtTime(d) { return `${f(d.getHours())}:${f(d.getMinutes())}`; }
-
-// Format minutes to readable duration: 30 -> "30min", 75 -> "1h15", 60 -> "1h"
-function formatDuration(mins) {
-  if (mins < 60) return `${mins}min`;
-  const h = Math.floor(mins / 60);
-  const m = mins % 60;
-  return m === 0 ? `${h}h` : `${h}h${f(m)}`;
-}
-
-// Compute working window for a barber today (first event start → last event end)
-function getWorkingWindow(bi) {
-  const evs = dayEvs(bi);
-  if (evs.length === 0) return null;
-  let minSt = Infinity, maxEn = -Infinity;
-  evs.forEach(e => {
-    const sm = (e.st.getHours()-H0)*60+e.st.getMinutes();
-    const em = (e.en.getHours()-H0)*60+e.en.getMinutes();
-    if (sm < minSt) minSt = sm;
-    if (em > maxEn) maxEn = em;
-  });
-  return { start: minSt, end: maxEn };
-}
-
-// Returns gap object { duration } if a free gap STARTS exactly at minute `min` for this barber
-function getGapStartingAt(bi, min) {
+function computeGaps(bi) {
   const win = getWorkingWindow(bi);
-  if (!win) return null;
-  if (min < win.start || min >= win.end) return null;
-
-  // On considère comme "occupé" : RDV clients ET blocs grisés
-  const occupied = [
-    ...realRdv(bi),
-    ...blockedSlots(bi),
-  ].map(e => ({
-    s: (e.st.getHours()-H0)*60+e.st.getMinutes(),
-    e: (e.en.getHours()-H0)*60+e.en.getMinutes(),
-  })).sort((a,b) => a.s - b.s);
-
-  // Build gap intervals within working window
+  if (!win) return [];
+  const occ = [...realRdv(bi), ...blockedSlots(bi)]
+    .map(e => ({ s: minOfDay(e.st), e: minOfDay(e.en) }))
+    .sort((a,b) => a.s - b.s);
   let cursor = win.start;
   const gaps = [];
-  for (const r of occupied) {
-    if (r.s > cursor) gaps.push({ start: cursor, end: r.s });
-    if (r.e > cursor) cursor = r.e;
+  for (const o of occ) {
+    if (o.s > cursor) gaps.push({ start: cursor, end: o.s });
+    if (o.e > cursor) cursor = o.e;
   }
   if (cursor < win.end) gaps.push({ start: cursor, end: win.end });
-
-  // Find a gap that starts exactly at `min`
-  const gap = gaps.find(g => g.start === min);
-  if (!gap) return null;
-  const duration = gap.end - gap.start;
-  if (duration < SM) return null;
-  return { duration };
+  return gaps.filter(g => g.end - g.start >= 15);
 }
 
-// ── CARDS ──
-function renderCards() {
-  document.getElementById('cards').innerHTML = BARBERS.map((b, i) => {
-    const open = isOpen(i);
-    const rdvs = realRdv(i);
-    return `<div class="card${b.prest?' prest':''}">
-      <div class="card-bar" style="background:${b.color}"></div>
-      <div class="card-name" style="color:${b.color}">${b.name}</div>
-      <div class="badge ${open?'badge-open':'badge-closed'}">
-        <div class="bdot ${open?'bdot-open':'bdot-closed'}"></div>
-        ${open?'Ouvert':'Fermé'}
-      </div>
-      ${open ? `<div class="card-num" style="color:${b.color}">${rdvs.length}</div><div class="card-sub">rdv</div>` : ''}
-    </div>`;
-  }).join('');
+function bodyHeight() { return (TOTAL_MIN/60) * pxPerHour; }
+
+function renderTimeColumn() {
+  const h = bodyHeight();
+  let labels = '';
+  for (let hr = H0; hr <= H1; hr++) {
+    labels += `<div class="time-label" style="top:${yPos((hr-H0)*60)}px">${hr}:00</div>`;
+    if (hr < H1) labels += `<div class="time-half" style="top:${yPos((hr-H0)*60+30)}px">30</div>`;
+  }
+  return `<div class="col-time"><div class="col-head corner"></div><div class="time-body" style="height:${h}px">${labels}</div></div>`;
 }
 
-// ── DESKTOP GRID ──
-function renderGrid() {
-  const grid = document.getElementById('calgrid');
-  const N    = BARBERS.length;
-  const cols = `44px repeat(${N}, minmax(0,1fr))`;
-  const totalS = (H1 - H0) * (60 / SM);
-  grid.innerHTML = '';
+function renderGridlines() {
+  let lines = '';
+  for (let hr = H0; hr <= H1; hr++) {
+    lines += `<div class="gridline" style="top:${yPos((hr-H0)*60)}px"></div>`;
+    if (hr < H1) lines += `<div class="gridline half" style="top:${yPos((hr-H0)*60+30)}px"></div>`;
+  }
+  return lines;
+}
 
-  const head = document.createElement('div');
-  head.className = 'cal-head';
-  head.style.gridTemplateColumns = cols;
-  head.appendChild(Object.assign(document.createElement('div'), {className:'cal-head-cell'}));
-  BARBERS.forEach((b, i) => {
-    const hc = document.createElement('div');
-    hc.className = 'cal-head-cell' + (i===FIRST_PREST?' sep':'');
-    hc.innerHTML = `<div>${b.name}</div><div class="cal-head-bar" style="background:${b.color}"></div>`;
-    head.appendChild(hc);
-  });
-  grid.appendChild(head);
+function renderBarberColumn(b, bi) {
+  const h = bodyHeight();
+  const open = isOpen(bi);
+  const win = getWorkingWindow(bi);
+  const rdvs = realRdv(bi);
+  const blocks = blockedSlots(bi);
+  const gaps = open ? computeGaps(bi) : [];
 
-  for (let s = 0; s < totalS; s++) {
-    const min = s * SM, h = H0 + Math.floor(min/60), m = min%60;
-    const isHour = m === 0;
-    const isHalf = m === 30;
-    const row = document.createElement('div');
-    row.className = 'cal-row';
-    row.style.gridTemplateColumns = cols;
-    const tc = document.createElement('div');
-    tc.className = 'tc';
-    tc.textContent = isHour ? `${h}h` : (isHalf ? '30' : '');
-    if (isHalf) tc.style.fontSize = '8px';
-    if (isHalf) tc.style.opacity = '.5';
-    row.appendChild(tc);
-    BARBERS.forEach((b, bi) => {
-      const cell = document.createElement('div');
-      cell.className = 'slot' + (isHour?' h':(isHalf?' half':'')) + (bi===FIRST_PREST?' sep':'');
+  let inner = renderGridlines();
 
-      // Render appointments starting at this slot
-      realRdv(bi).forEach(ev => {
-        const esm = (ev.st.getHours()-H0)*60+ev.st.getMinutes();
-        const eem = (ev.en.getHours()-H0)*60+ev.en.getMinutes();
-        if (esm < min+SM && eem > min && esm >= min) {
-          const dur = Math.max(eem-esm, SM);
-          const a = document.createElement('div');
-          a.className = 'appt';
-          const apptH = Math.max((dur/SM)*SH-2, SH-2);
-          a.style.cssText = `background:${b.bg};border-left:2.5px solid ${b.color};height:${apptH}px`;
-          const durLabel = formatDuration(eem - esm);
-          // Conditionally show duration line only if there's space
-          const showDur = apptH >= 38;
-          a.innerHTML = `<span class="appt-n" style="color:${b.text}">${ev.label}</span>
-            <span class="appt-t" style="color:${b.text}">${fmtTime(ev.st)}–${fmtTime(ev.en)}</span>
-            ${showDur ? `<span class="appt-dur" style="color:${b.text}">${durLabel}</span>` : ''}`;
-          cell.appendChild(a);
-        }
-      });
-
-      // Render blocked slots (grey) starting at this slot
-      blockedSlots(bi).forEach(ev => {
-        const esm = (ev.st.getHours()-H0)*60+ev.st.getMinutes();
-        const eem = (ev.en.getHours()-H0)*60+ev.en.getMinutes();
-        if (esm < min+SM && eem > min && esm >= min) {
-          const dur = eem - esm;
-          const blockedH = Math.max((dur/SM)*SH, SH);
-          const blk = document.createElement('div');
-          blk.className = 'blocked';
-          blk.style.height = `${blockedH}px`;
-          // Affiche la durée seulement si le bloc est assez grand
-          blk.textContent = blockedH >= 30 ? formatDuration(dur) : '';
-          blk.title = `Indisponible — ${fmtTime(ev.st)}–${fmtTime(ev.en)} (${formatDuration(dur)})`;
-          cell.appendChild(blk);
-        }
-      });
-
-      // Render gaps starting at this slot
-      const gap = getGapStartingAt(bi, min);
-      if (gap) {
-        const gapH = (gap.duration / SM) * SH - 2;
-        const g = document.createElement('div');
-        g.className = 'gap';
-        g.style.cssText = `top:1px;height:${gapH}px`;
-        g.textContent = formatDuration(gap.duration);
-        if (gapH < 22) g.style.fontSize = '7.5px';
-        cell.appendChild(g);
-      }
-
-      row.appendChild(cell);
-    });
-    grid.appendChild(row);
+  if (win && open) {
+    if (win.start > 0) inner += `<div class="closed-zone" style="top:0;height:${yPos(win.start)}px"></div>`;
+    if (win.end < TOTAL_MIN) inner += `<div class="closed-zone" style="top:${yPos(win.end)}px;height:${yPos(TOTAL_MIN)-yPos(win.end)}px"></div>`;
+  } else {
+    inner += `<div class="closed-zone" style="top:0;height:${h}px"></div>`;
+    inner += `<div class="col-closed-label">${cur.getDay()===0 ? 'Fermé' : 'Absent'}</div>`;
   }
 
-  document.getElementById('legend').innerHTML = BARBERS.map(b =>
-    `<div class="leg-item"><div class="leg-dot" style="background:${b.color}"></div>${b.name}${b.prest?' <span style="opacity:.5">(prest.)</span>':''}</div>`
-  ).join('');
-}
-
-// ── MOBILE TIMELINE ──
-function renderMobile() {
-  const wrap = document.getElementById('mobile-view');
-  wrap.innerHTML = '';
-
-  BARBERS.forEach((b, i) => {
-    // Séparateur avant les prestataires
-    if (i === FIRST_PREST) {
-      wrap.innerHTML += `<div class="prest-sep">
-        <div class="prest-sep-line"></div>
-        <div class="prest-sep-label">Prestataires</div>
-        <div class="prest-sep-line"></div>
-      </div>`;
-    }
-
-    const open = isOpen(i);
-    const rdvs = realRdv(i);
-    const blocked = blockedSlots(i);
-    const win = getWorkingWindow(i);
-
-    const row = document.createElement('div');
-    row.className = 'barber-row' + (b.prest ? ' prest' : '');
-
-    // Header du barbier
-    row.innerHTML = `<div class="barber-header" style="border-left:3px solid ${b.color}">
-      <div class="barber-header-left">
-        <div class="barber-color-dot" style="background:${b.color}"></div>
-        <div class="barber-header-name">${b.name}</div>
-      </div>
-      <div class="barber-header-right">
-        ${open ? `<span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">${rdvs.length} rdv</span>` : ''}
-        <div class="badge-sm ${open?'badge-open':'badge-closed'}">
-          <div class="bdot ${open?'bdot-open':'bdot-closed'}" style="width:5px;height:5px"></div>
-          ${open?'Ouvert':'Fermé'}
-        </div>
-      </div>
-    </div>`;
-
-    if (!open) {
-      row.innerHTML += `<div class="tl-closed">Indisponible aujourd'hui</div>`;
-    } else {
-      // Timeline horizontale avec RDV + blocs grisés + trous libres
-      const tlWrap = document.createElement('div');
-      tlWrap.className = 'timeline-wrap';
-
-      // Labels heures
-      const hoursRow = document.createElement('div');
-      hoursRow.className = 'timeline-hours';
-      hoursRow.style.cssText = 'position:relative;height:14px;margin-bottom:3px';
-      for (let h = H0; h <= H1; h += 2) {
-        const pct = ((h - H0) / (H1 - H0)) * 100;
-        const lbl = document.createElement('span');
-        lbl.className = 'tl-hour-label';
-        lbl.textContent = h + 'h';
-        lbl.style.cssText = `position:absolute;left:${pct}%;transform:translateX(-50%)`;
-        hoursRow.appendChild(lbl);
-      }
-      tlWrap.appendChild(hoursRow);
-
-      const track = document.createElement('div');
-      track.className = 'timeline-track';
-
-      // 1) Blocs grisés Planity
-      blocked.forEach(ev => {
-        const startMin = (ev.st.getHours()-H0)*60 + ev.st.getMinutes();
-        const endMin   = (ev.en.getHours()-H0)*60 + ev.en.getMinutes();
-        const left  = Math.max(0, startMin/TOTAL_MIN*100);
-        const width = Math.max(0.3, (endMin-startMin)/TOTAL_MIN*100);
-        const blk = document.createElement('div');
-        blk.className = 'tl-blocked';
-        blk.style.cssText = `left:${left}%;width:${width}%`;
-        blk.title = `Indisponible — ${fmtTime(ev.st)}–${fmtTime(ev.en)}`;
-        track.appendChild(blk);
-      });
-
-      // 2) Trous libres (uniquement entre RDV/blocs dans la fenêtre de travail)
-      if (win) {
-        const occupied = [...rdvs, ...blocked].map(e => ({
-          s: (e.st.getHours()-H0)*60+e.st.getMinutes(),
-          e: (e.en.getHours()-H0)*60+e.en.getMinutes(),
-        })).sort((a,b) => a.s - b.s);
-        let cursor = win.start;
-        const gaps = [];
-        for (const r of occupied) {
-          if (r.s > cursor) gaps.push({ start: cursor, end: r.s });
-          if (r.e > cursor) cursor = r.e;
-        }
-        if (cursor < win.end) gaps.push({ start: cursor, end: win.end });
-
-        gaps.forEach(g => {
-          const dur = g.end - g.start;
-          if (dur < 15) return;
-          const left  = g.start/TOTAL_MIN*100;
-          const width = dur/TOTAL_MIN*100;
-          const gapEl = document.createElement('div');
-          gapEl.className = 'tl-gap';
-          gapEl.style.cssText = `left:${left}%;width:${width}%`;
-          gapEl.textContent = width > 6 ? formatDuration(dur) : '';
-          gapEl.title = `Libre ${formatDuration(dur)}`;
-          track.appendChild(gapEl);
-        });
-      }
-
-      // 3) RDV clients (par-dessus tout)
-      rdvs.forEach(ev => {
-        const startMin = (ev.st.getHours()-H0)*60 + ev.st.getMinutes();
-        const endMin   = (ev.en.getHours()-H0)*60 + ev.en.getMinutes();
-        const left     = Math.max(0, startMin/TOTAL_MIN*100);
-        const width    = Math.max(0.5, (endMin-startMin)/TOTAL_MIN*100);
-        const appt = document.createElement('div');
-        appt.className = 'tl-appt';
-        appt.style.cssText = `left:${left}%;width:${width}%;background:${b.bg};border-left:2px solid ${b.color}`;
-        appt.innerHTML = `<span class="tl-appt-text" style="color:${b.text}">${ev.label}</span>`;
-        appt.title = `${ev.label} — ${fmtTime(ev.st)}–${fmtTime(ev.en)}`;
-        track.appendChild(appt);
-      });
-
-      tlWrap.appendChild(track);
-      row.appendChild(tlWrap);
-
-      // Liste des RDV
-      if (rdvs.length === 0) {
-        row.innerHTML += `<div class="no-rdv">Aucun rendez-vous prévu</div>`;
-      } else {
-        const list = document.createElement('div');
-        list.className = 'rdv-list';
-        rdvs.forEach(ev => {
-          const dur = (ev.en - ev.st) / 60000;
-          list.innerHTML += `<div class="rdv-item" style="background:${b.bg}">
-            <span class="rdv-time" style="color:${b.text}">${fmtTime(ev.st)}–${fmtTime(ev.en)}</span>
-            <span class="rdv-label" style="color:${b.text}">${ev.label}</span>
-            <span style="color:${b.text};opacity:.6;font-size:10px;font-family:'DM Mono',monospace;margin-left:auto">${formatDuration(dur)}</span>
-          </div>`;
-        });
-        row.appendChild(list);
-      }
-    }
-
-    wrap.appendChild(row);
+  gaps.forEach(g => {
+    const top = yPos(g.start), height = yPos(g.end) - top, dur = g.end - g.start;
+    inner += `<div class="gap" style="top:${top}px;height:${height}px">${height>=26 ? `<div class="gap-txt">${formatDuration(dur)}<br>libre</div>` : ''}</div>`;
   });
-}
 
-function setLabel() {
-  document.getElementById('dlabel').textContent =
-    cur.toLocaleDateString('fr-FR', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  blocks.forEach(ev => {
+    const s = minOfDay(ev.st), e = minOfDay(ev.en);
+    const top = yPos(s), height = yPos(e) - top, dur = e - s;
+    inner += `<div class="blocked" style="top:${top}px;height:${height}px"><div class="blocked-inner"><span class="blocked-lock">&#128274;</span>${height>=34 ? `<span class="blocked-txt">${formatDuration(dur)}</span>` : ''}</div></div>`;
+  });
+
+  rdvs.forEach(ev => {
+    const s = minOfDay(ev.st), e = minOfDay(ev.en);
+    const top = yPos(s), height = Math.max(yPos(e) - top, 20), dur = e - s;
+    const lock = !ev.bookedOnline ? `<span class="evt-lock">&#128274;</span>` : '';
+    inner += `<div class="evt" style="top:${top}px;height:${height}px;background:${b.bg};border-left:3px solid ${b.color};color:${b.text}" title="${ev.label} — ${fmtTime(ev.st)}–${fmtTime(ev.en)} (${formatDuration(dur)})">${lock}<div class="evt-service">${ev.label}</div>${height>=30 ? `<div class="evt-time">${fmtTime(ev.st)}–${fmtTime(ev.en)}</div>` : ''}${height>=52 ? `<div class="evt-dur">${formatDuration(dur)}</div>` : ''}</div>`;
+  });
+
+  if (cur.toDateString() === new Date().toDateString()) {
+    const now = new Date();
+    const nowMin = (now.getHours()-H0)*60 + now.getMinutes();
+    if (nowMin >= 0 && nowMin <= TOTAL_MIN) inner += `<div class="now-line" style="top:${yPos(nowMin)}px"><div class="now-dot"></div></div>`;
+  }
+
+  const badge = open
+    ? `<div class="bh-badge bh-open"><div class="bh-dot bh-dot-o"></div>Ouvert</div>`
+    : `<div class="bh-badge bh-closed"><div class="bh-dot bh-dot-c"></div>Fermé</div>`;
+  const count = open && rdvs.length ? `<div class="bh-count">${rdvs.length} rdv</div>` : '';
+
+  return `<div class="col-barber ${bi===FIRST_PREST?'prest-first':''}"><div class="col-head"><div class="bh-top"><div class="bh-bar" style="background:${b.color}"></div><div class="bh-name">${b.name}</div></div>${badge}${count}</div><div class="col-body" style="height:${h}px">${inner}</div></div>`;
 }
 
 function render() {
-  setLabel();
-  renderCards();
-  renderGrid();
-  renderMobile();
+  document.getElementById('dlabel').textContent =
+    cur.toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' });
+  let html = renderTimeColumn();
+  BARBERS.forEach((b, bi) => { html += renderBarberColumn(b, bi); });
+  document.getElementById('grid').innerHTML = html;
+}
+
+function scrollToNow() {
+  const scroll = document.getElementById('scroll');
+  const now = new Date();
+  let targetMin = (cur.toDateString() === now.toDateString())
+    ? (now.getHours()-H0)*60 + now.getMinutes() - 60
+    : 60;
+  scroll.scrollTop = Math.max(0, yPos(targetMin));
 }
 
 function go(d) { cur = new Date(cur); cur.setDate(cur.getDate()+d); render(); }
-function goToday() { cur = new Date(); render(); }
+function goToday() { cur = new Date(); render(); scrollToNow(); }
 
-setLabel();
-fetchAll().then(render);
+function zoom(dir) {
+  const scroll = document.getElementById('scroll');
+  const centerRatio = (scroll.scrollTop + scroll.clientHeight/2) / (bodyHeight() || 1);
+  pxPerHour = Math.max(PX_MIN, Math.min(PX_MAX, pxPerHour + dir*16));
+  render();
+  scroll.scrollTop = centerRatio * bodyHeight() - scroll.clientHeight/2;
+}
+
+(async () => {
+  render();
+  await fetchAll();
+  document.getElementById('loading').style.display = 'none';
+  render();
+  scrollToNow();
+})();
 </script>
 </body>
 </html>
