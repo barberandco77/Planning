@@ -47,7 +47,7 @@ main { max-width: 1300px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
 .btn-today:hover { opacity: .8; }
 
 /* ── STATUS CARDS ── */
-.cards { display: grid; grid-template-columns: repeat(10, minmax(0,1fr)); gap: 6px; margin-bottom: 1.25rem; }
+.cards { display: grid; grid-template-columns: repeat(9, minmax(0,1fr)); gap: 6px; margin-bottom: 1.25rem; }
 .card {
   background: var(--white); border: 1px solid var(--border); border-radius: 10px;
   padding: 10px 6px; text-align: center; position: relative; overflow: hidden;
@@ -80,42 +80,48 @@ main { max-width: 1300px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
 .cal-row:last-child .slot, .cal-row:last-child .tc { border-bottom: none; }
 .tc {
   border-right: 1px solid var(--border); border-bottom: 1px solid rgba(0,0,0,.05);
-  height: 28px; display: flex; align-items: flex-start; justify-content: flex-end;
-  padding: 3px 5px 0; font-size: 9.5px; color: var(--muted);
+  height: 16px; display: flex; align-items: flex-start; justify-content: flex-end;
+  padding: 2px 5px 0; font-size: 9.5px; color: var(--muted);
   font-family: 'DM Mono', monospace; background: var(--surface);
 }
-.slot { border-right: 1px solid var(--border); border-bottom: 1px solid rgba(0,0,0,.05); height: 28px; position: relative; }
+.slot { border-right: 1px solid var(--border); border-bottom: 1px solid rgba(0,0,0,.04); height: 16px; position: relative; }
 .slot:last-child { border-right: none; }
-.slot.h { border-bottom: 1px solid rgba(0,0,0,.09) !important; }
+.slot.h { border-bottom: 1px solid rgba(0,0,0,.12) !important; }
+.slot.half { border-bottom: 1px dashed rgba(0,0,0,.08) !important; }
 .slot.sep { border-left: 2px solid rgba(0,0,0,.12); }
 .appt {
   position: absolute; left: 2px; right: 2px; top: 1px;
-  border-radius: 4px; padding: 2px 3px; font-size: 8.5px; line-height: 1.3; overflow: hidden; z-index: 2;
+  border-radius: 4px; padding: 3px 5px; font-size: 9.5px; line-height: 1.25; overflow: hidden; z-index: 2;
 }
-.appt-n { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
-.appt-t { font-size: 7.5px; opacity: .7; font-family: 'DM Mono', monospace; }
-
-/* Blocs grisés & trous libres dans la grille desktop */
-.blocked {
-  position: absolute; left: 2px; right: 2px; top: 1px;
-  background: repeating-linear-gradient(135deg, #cfcfca, #cfcfca 5px, #c2c2bc 5px, #c2c2bc 10px);
-  border: 1px solid #aeaea8; border-radius: 4px; z-index: 2;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  color: rgba(0,0,0,.5); text-shadow: 0 1px 0 rgba(255,255,255,.4);
-}
+.appt-n { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; margin-bottom: 1px; }
+.appt-t { font-size: 8.5px; opacity: .75; font-family: 'DM Mono', monospace; }
+.appt-dur { font-size: 8px; opacity: .55; font-family: 'DM Mono', monospace; font-weight: 500; margin-top: 1px; }
 .gap {
-  position: absolute; left: 3px; right: 3px; top: 1px;
-  background: rgba(34,197,94,.06); border: 1px dashed rgba(34,197,94,.35);
-  border-radius: 4px; z-index: 1;
+  position: absolute; left: 3px; right: 3px;
+  border-radius: 3px;
+  background: repeating-linear-gradient(45deg, rgba(34,197,94,.06), rgba(34,197,94,.06) 5px, rgba(34,197,94,.12) 5px, rgba(34,197,94,.12) 10px);
+  border: 1px dashed rgba(34,197,94,.3);
   display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 600; font-family: 'DM Mono', monospace;
+  color: #15803d; z-index: 1;
+  pointer-events: none;
+}
+.blocked {
+  position: absolute; left: 1px; right: 1px; top: 0;
+  background: repeating-linear-gradient(135deg, #d4d4d0, #d4d4d0 6px, #c8c8c4 6px, #c8c8c4 12px);
+  border: 1px solid #a8a8a4;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 600; font-family: 'DM Mono', monospace;
+  color: rgba(0,0,0,.55); z-index: 2;
+  pointer-events: none;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
 }
 
-/* ════════ MOBILE : LISTE VERTICALE ════════ */
+/* ── MOBILE : LISTE VERTICALE ── */
 .mobile-view { display: none; }
 
 .m-barber { background: var(--white); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
 .m-barber.prest { border-style: dashed; }
-
 .m-bhead { display: flex; align-items: center; justify-content: space-between; padding: 11px 13px; border-bottom: 1px solid var(--border); }
 .m-bhead-l { display: flex; align-items: center; gap: 9px; }
 .m-bdot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
@@ -123,33 +129,148 @@ main { max-width: 1300px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
 .m-bhead-r { display: flex; align-items: center; gap: 8px; }
 .m-bcount { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
 .m-badge { font-size: 9.5px; font-weight: 600; padding: 3px 9px; border-radius: 20px; display: flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: .02em; }
-
 .m-closed { display: flex; align-items: center; justify-content: space-between; padding: 11px 13px; opacity: .7; }
 .m-closed-l { display: flex; align-items: center; gap: 9px; }
 .m-closed-name { font-size: 13px; font-weight: 600; color: var(--muted); }
-
 .m-day { padding: 8px; display: flex; flex-direction: column; gap: 5px; }
 .m-seg { display: flex; gap: 9px; align-items: stretch; }
 .m-seg-time { flex: 0 0 40px; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--muted); padding-top: 9px; font-weight: 500; text-align: right; }
 .m-seg-body { flex: 1; border-radius: 9px; padding: 9px 12px; min-height: 42px; display: flex; flex-direction: column; justify-content: center; }
-
 .m-rdv { box-shadow: inset 0 0 0 1px rgba(0,0,0,.03); }
 .m-rdv-service { font-size: 13px; font-weight: 700; line-height: 1.2; }
 .m-rdv-meta { font-size: 11px; font-family: 'DM Mono', monospace; opacity: .75; margin-top: 2px; }
-
 .m-block { background: repeating-linear-gradient(135deg, #d6d6d1, #d6d6d1 6px, #c9c9c4 6px, #c9c9c4 12px); border: 1px solid #b4b4ae; flex-direction: row; align-items: center; gap: 7px; color: rgba(0,0,0,.55); }
 .m-block-txt { font-size: 12px; font-weight: 600; }
 .m-block-dur { font-size: 11px; font-family: 'DM Mono', monospace; opacity: .8; margin-left: auto; }
-
 .m-gap { background: rgba(34,197,94,.07); border: 1.5px dashed rgba(34,197,94,.4); flex-direction: row; align-items: center; gap: 7px; color: #15803d; }
 .m-gap-txt { font-size: 13px; font-weight: 700; }
 .m-gap-sub { font-size: 11px; opacity: .7; margin-left: auto; font-family: 'DM Mono', monospace; }
-
 .m-empty { padding: 16px 13px; text-align: center; font-size: 12px; color: var(--muted); font-style: italic; }
 
-.prest-sep { display: flex; align-items: center; gap: 10px; margin: 16px 0 10px; }
-.prest-sep-line { flex: 1; height: 1px; background: var(--border-strong, rgba(0,0,0,.13)); }
-.prest-sep-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); white-space: nowrap; }
+/* ── ancienne timeline (non utilisée) ── */
+.barber-row {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.barber-row.prest { border-style: dashed; }
+
+.barber-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.barber-header-left { display: flex; align-items: center; gap: 8px; }
+.barber-color-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.barber-header-name { font-size: 13px; font-weight: 600; }
+.barber-header-right { display: flex; align-items: center; gap: 6px; }
+.badge-sm { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 20px; display: flex; align-items: center; gap: 3px; }
+
+/* Timeline horizontale */
+.timeline-wrap {
+  padding: 10px 12px;
+  overflow: hidden;
+}
+.timeline-hours {
+  display: flex;
+  margin-bottom: 4px;
+}
+.tl-hour-label {
+  font-size: 8.5px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  flex-shrink: 0;
+}
+.timeline-track {
+  position: relative;
+  height: 38px;
+  background: #f4f3f0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.06);
+}
+.tl-appt {
+  position: absolute;
+  top: 2px;
+  height: calc(100% - 4px);
+  border-radius: 5px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  min-width: 2px;
+  z-index: 3;
+}
+.tl-blocked {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: repeating-linear-gradient(135deg, #d4d4d0, #d4d4d0 5px, #c8c8c4 5px, #c8c8c4 10px);
+  border: 1px solid #a8a8a4;
+  z-index: 2;
+}
+.tl-gap {
+  position: absolute;
+  top: 2px;
+  height: calc(100% - 4px);
+  border-radius: 4px;
+  background: repeating-linear-gradient(45deg, rgba(34,197,94,.08), rgba(34,197,94,.08) 4px, rgba(34,197,94,.18) 4px, rgba(34,197,94,.18) 8px);
+  border: 1px dashed rgba(34,197,94,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8.5px;
+  font-weight: 600;
+  font-family: 'DM Mono', monospace;
+  color: #15803d;
+  z-index: 1;
+  overflow: hidden;
+}
+.tl-appt-text {
+  font-size: 9px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tl-closed {
+  padding: 8px 12px 10px;
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+}
+.rdv-list {
+  padding: 0 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.rdv-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 7px;
+  font-size: 11px;
+}
+.rdv-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  opacity: .7;
+  flex-shrink: 0;
+  min-width: 80px;
+}
+.rdv-label { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Pas de RDV */
+.no-rdv { font-size: 11px; color: var(--muted); padding: 0 12px 10px; font-style: italic; }
+
+/* Séparateur prestataires */
+.prest-sep { display: flex; align-items: center; gap: 10px; margin: 14px 0 8px; }
+.prest-sep-line { flex: 1; height: 1px; background: var(--border); }
+.prest-sep-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); white-space: nowrap; }
 
 /* ── LOADING ── */
 .loading { text-align: center; padding: 2.5rem; color: var(--muted); font-size: 13px; }
@@ -215,6 +336,7 @@ const PROXIES = [
   url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
   url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
   url => `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(url)}`,
+  url => `https://thingproxy.freeboard.io/fetch/${url}`,
 ];
 
 const BASE     = 'https://product.api.euwest1.prod.planityapp.com/getCalendarIcalEvents';
@@ -223,20 +345,20 @@ const BIZ_PRES = '-Ojf3BVliXAlXePawpoH';
 const KEY      = 'BWXFBLs3f4ezQjbNcape5SIzkdL8mAUL';
 
 const BARBERS = [
-  { name:'Jo',         cal:'-Oq5TPRWn96oT1FZwThF', biz:BIZ_EMP,  color:'#0d9488', bg:'#ccfbf1', text:'#0f5132' },
   { name:'Leandro',    cal:'-OWZzo6Y0Si8zhF6NoIP', biz:BIZ_EMP,  color:'#2d7dd2', bg:'#ddeeff', text:'#0a3d6e' },
   { name:'Djibril',    cal:'-OUELrMU0_orIe4PDWIT', biz:BIZ_EMP,  color:'#1a9268', bg:'#d2f5e8', text:'#0a4a35' },
   { name:'Melki',      cal:'-O40gs8Cttf16EyHx2LH', biz:BIZ_EMP,  color:'#c94f7a', bg:'#fce8f2', text:'#6b1c3c' },
   { name:'Noa',        cal:'-OVwo8a3v4_TLl597dH0', biz:BIZ_EMP,  color:'#b5700f', bg:'#fef0d0', text:'#5c380a' },
   { name:'BarberWill', cal:'-Mk2LVGQLBFAlH4z_plh', biz:BIZ_EMP,  color:'#5548b0', bg:'#eceafd', text:'#302880' },
   { name:'HairByNN',   cal:'-NtWD3xo8WYzcooGXWCd', biz:BIZ_EMP,  color:'#b83025', bg:'#fde8e6', text:'#6b1510' },
+  { name:'Jo',         cal:'-Oq5TPRWn96oT1FZwThF', biz:BIZ_EMP,  color:'#0d9488', bg:'#ccfbf1', text:'#134e4a' },
   { name:'Veny',       cal:'-Ok3wmlpVH1IS3ycKx2V', biz:BIZ_PRES, color:'#0891b2', bg:'#e0f2fe', text:'#0c4a6e', prest:true },
   { name:'Waggy',      cal:'-Ok3yGbboZmn-cXRPP4G', biz:BIZ_PRES, color:'#65a30d', bg:'#ecfccb', text:'#365314', prest:true },
   { name:'Mcken',      cal:'-Oo6JSRIXBL-RVhyIFqQ', biz:BIZ_PRES, color:'#9333ea', bg:'#f3e8ff', text:'#581c87', prest:true },
 ];
 
 const FIRST_PREST = BARBERS.findIndex(b => b.prest);
-const H0 = 9, H1 = 20, SM = 30, SH = 28;
+const H0 = 9, H1 = 20, SM = 15, SH = 16;
 const TOTAL_MIN = (H1 - H0) * 60;
 let cur  = new Date();
 let cals = {};
@@ -293,63 +415,95 @@ function dayEvs(bi) {
   return (cals[bi]||[]).filter(e => e.st.toDateString() === d);
 }
 function realRdv(bi) { return dayEvs(bi).filter(e => e.isRealRdv); }
-function blockedSlots(bi) { return dayEvs(bi).filter(e => !e.isRealRdv); }
 
-const minOfDay = d => (d.getHours()-H0)*60 + d.getMinutes();
-
-function getWorkingWindow(bi) {
-  const evs = dayEvs(bi);
-  if (!evs.length) return null;
-  let s = Infinity, e = -Infinity;
-  evs.forEach(ev => { s = Math.min(s, minOfDay(ev.st)); e = Math.max(e, minOfDay(ev.en)); });
-  return { start: Math.max(s, 0), end: Math.min(e, TOTAL_MIN) };
+// Tous les events sans service Planity sont des blocs grisés (absences, pauses, RDV manuels)
+function blockedSlots(bi) {
+  return dayEvs(bi).filter(e => !e.isRealRdv);
 }
 
 function isOpen(bi) {
   if (cur.getDay() === 0) return false;
   const evs = dayEvs(bi);
-  if (!evs.length) return false;
-  if (evs.some(e => e.isRealRdv)) return true;
-  // Que des blocs : fermé si quasi toute la journée est bloquée
+  if (evs.length === 0) return false;
+  // Si le barbier n'a QUE des blocs grisés et aucun RDV, il est considéré comme indisponible
+  // Sauf s'il y a au moins un créneau libre exploitable
+  const hasRealRdv = evs.some(e => e.isRealRdv);
+  if (hasRealRdv) return true;
+  // Pas de RDV mais des blocs : check s'il reste une fenêtre libre
   const win = getWorkingWindow(bi);
   if (!win) return false;
-  let blocked = 0;
-  blockedSlots(bi).forEach(ev => {
-    const a = Math.max(minOfDay(ev.st), win.start);
-    const b = Math.min(minOfDay(ev.en), win.end);
-    if (b > a) blocked += (b - a);
+  const blocked = blockedSlots(bi).map(e => ({
+    s: (e.st.getHours()-H0)*60+e.st.getMinutes(),
+    e: (e.en.getHours()-H0)*60+e.en.getMinutes(),
+  })).sort((a,b) => a.s - b.s);
+  // Calcule le temps total bloqué dans la fenêtre
+  let totalBlocked = 0;
+  blocked.forEach(b => {
+    const s = Math.max(b.s, win.start);
+    const e = Math.min(b.e, win.end);
+    if (e > s) totalBlocked += (e - s);
   });
-  return blocked / (win.end - win.start) < 0.9;
-}
-
-// Séquence chronologique d'une journée : rdv / bloc / trou libre
-function buildSegments(bi) {
-  const win = getWorkingWindow(bi);
-  if (!win) return [];
-  const items = [
-    ...realRdv(bi).map(e => ({ type:'rdv', s:minOfDay(e.st), e:minOfDay(e.en), ev:e })),
-    ...blockedSlots(bi).map(e => ({ type:'block', s:minOfDay(e.st), e:minOfDay(e.en) })),
-  ].sort((a,b) => a.s - b.s || a.e - b.e);
-  const segs = [];
-  let cursor = win.start;
-  for (const it of items) {
-    if (it.e <= cursor) continue;
-    if (it.s > cursor) segs.push({ type:'gap', s:cursor, e:it.s });
-    segs.push({ ...it, s: Math.max(it.s, cursor) });
-    cursor = Math.max(cursor, it.e);
-  }
-  if (cursor < win.end) segs.push({ type:'gap', s:cursor, e:win.end });
-  return segs.filter(s => s.e - s.s >= 5);
+  const winSize = win.end - win.start;
+  // Si plus de 90% de la fenêtre est bloquée, on considère qu'il est indispo
+  return totalBlocked / winSize < 0.9;
 }
 
 const f = n => String(n).padStart(2,'0');
 function fmtTime(d) { return `${f(d.getHours())}:${f(d.getMinutes())}`; }
-function fmtDur(mins) {
-  if (mins < 60) return `${mins} min`;
-  const h = Math.floor(mins/60), m = mins%60;
+
+// Format minutes to readable duration: 30 -> "30min", 75 -> "1h15", 60 -> "1h"
+function formatDuration(mins) {
+  if (mins < 60) return `${mins}min`;
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
   return m === 0 ? `${h}h` : `${h}h${f(m)}`;
 }
-const m2t = m => `${f(H0 + Math.floor(m/60))}:${f(m%60)}`;
+
+// Compute working window for a barber today (first event start → last event end)
+function getWorkingWindow(bi) {
+  const evs = dayEvs(bi);
+  if (evs.length === 0) return null;
+  let minSt = Infinity, maxEn = -Infinity;
+  evs.forEach(e => {
+    const sm = (e.st.getHours()-H0)*60+e.st.getMinutes();
+    const em = (e.en.getHours()-H0)*60+e.en.getMinutes();
+    if (sm < minSt) minSt = sm;
+    if (em > maxEn) maxEn = em;
+  });
+  return { start: minSt, end: maxEn };
+}
+
+// Returns gap object { duration } if a free gap STARTS exactly at minute `min` for this barber
+function getGapStartingAt(bi, min) {
+  const win = getWorkingWindow(bi);
+  if (!win) return null;
+  if (min < win.start || min >= win.end) return null;
+
+  // On considère comme "occupé" : RDV clients ET blocs grisés
+  const occupied = [
+    ...realRdv(bi),
+    ...blockedSlots(bi),
+  ].map(e => ({
+    s: (e.st.getHours()-H0)*60+e.st.getMinutes(),
+    e: (e.en.getHours()-H0)*60+e.en.getMinutes(),
+  })).sort((a,b) => a.s - b.s);
+
+  // Build gap intervals within working window
+  let cursor = win.start;
+  const gaps = [];
+  for (const r of occupied) {
+    if (r.s > cursor) gaps.push({ start: cursor, end: r.s });
+    if (r.e > cursor) cursor = r.e;
+  }
+  if (cursor < win.end) gaps.push({ start: cursor, end: win.end });
+
+  // Find a gap that starts exactly at `min`
+  const gap = gaps.find(g => g.start === min);
+  if (!gap) return null;
+  const duration = gap.end - gap.start;
+  if (duration < SM) return null;
+  return { duration };
+}
 
 // ── CARDS ──
 function renderCards() {
@@ -390,19 +544,22 @@ function renderGrid() {
 
   for (let s = 0; s < totalS; s++) {
     const min = s * SM, h = H0 + Math.floor(min/60), m = min%60;
+    const isHour = m === 0;
+    const isHalf = m === 30;
     const row = document.createElement('div');
     row.className = 'cal-row';
     row.style.gridTemplateColumns = cols;
     const tc = document.createElement('div');
     tc.className = 'tc';
-    tc.textContent = m === 0 ? `${h}h` : '';
+    tc.textContent = isHour ? `${h}h` : (isHalf ? '30' : '');
+    if (isHalf) tc.style.fontSize = '8px';
+    if (isHalf) tc.style.opacity = '.5';
     row.appendChild(tc);
     BARBERS.forEach((b, bi) => {
       const cell = document.createElement('div');
-      cell.className = 'slot' + (m===0?' h':'') + (bi===FIRST_PREST?' sep':'');
-      const op = isOpen(bi);
+      cell.className = 'slot' + (isHour?' h':(isHalf?' half':'')) + (bi===FIRST_PREST?' sep':'');
 
-      // RDV clients
+      // Render appointments starting at this slot
       realRdv(bi).forEach(ev => {
         const esm = (ev.st.getHours()-H0)*60+ev.st.getMinutes();
         const eem = (ev.en.getHours()-H0)*60+ev.en.getMinutes();
@@ -410,42 +567,45 @@ function renderGrid() {
           const dur = Math.max(eem-esm, SM);
           const a = document.createElement('div');
           a.className = 'appt';
-          a.style.cssText = `background:${b.bg};border-left:2.5px solid ${b.color};height:${Math.max((dur/SM)*SH-2,SH-2)}px`;
+          const apptH = Math.max((dur/SM)*SH-2, SH-2);
+          a.style.cssText = `background:${b.bg};border-left:2.5px solid ${b.color};height:${apptH}px`;
+          const durLabel = formatDuration(eem - esm);
+          // Conditionally show duration line only if there's space
+          const showDur = apptH >= 38;
           a.innerHTML = `<span class="appt-n" style="color:${b.text}">${ev.label}</span>
-            <span class="appt-t" style="color:${b.text}">${fmtTime(ev.st)}–${fmtTime(ev.en)}</span>`;
+            <span class="appt-t" style="color:${b.text}">${fmtTime(ev.st)}–${fmtTime(ev.en)}</span>
+            ${showDur ? `<span class="appt-dur" style="color:${b.text}">${durLabel}</span>` : ''}`;
           cell.appendChild(a);
         }
       });
 
-      // Blocs grisés (indispo)
+      // Render blocked slots (grey) starting at this slot
       blockedSlots(bi).forEach(ev => {
         const esm = (ev.st.getHours()-H0)*60+ev.st.getMinutes();
         const eem = (ev.en.getHours()-H0)*60+ev.en.getMinutes();
         if (esm < min+SM && eem > min && esm >= min) {
           const dur = eem - esm;
+          const blockedH = Math.max((dur/SM)*SH, SH);
           const blk = document.createElement('div');
           blk.className = 'blocked';
-          const bh = Math.max((dur/SM)*SH-2, SH-2);
-          blk.style.height = `${bh}px`;
-          blk.innerHTML = `<span style="font-size:10px">&#128274;</span>${bh>=30?`<span style="font-size:8px;font-weight:600;font-family:'DM Mono',monospace;margin-top:1px">${fmtDur(dur)}</span>`:''}`;
-          blk.title = `Indisponible — ${fmtTime(ev.st)}–${fmtTime(ev.en)}`;
+          blk.style.height = `${blockedH}px`;
+          // Affiche la durée seulement si le bloc est assez grand
+          blk.textContent = blockedH >= 30 ? formatDuration(dur) : '';
+          blk.title = `Indisponible — ${fmtTime(ev.st)}–${fmtTime(ev.en)} (${formatDuration(dur)})`;
           cell.appendChild(blk);
         }
       });
 
-      // Trous libres (uniquement si ouvert)
-      if (op) {
-        const segs = buildSegments(bi);
-        segs.filter(sg => sg.type === 'gap' && sg.s >= min && sg.s < min+SM).forEach(g => {
-          const dur = g.e - g.s;
-          const gh = Math.max((dur/SM)*SH-2, SH-2);
-          const gp = document.createElement('div');
-          gp.className = 'gap';
-          gp.style.height = `${gh}px`;
-          gp.innerHTML = gh>=22 ? `<span style="font-size:8.5px;font-weight:700;font-family:'DM Mono',monospace;color:#15803d">${fmtDur(dur)}</span>` : '';
-          gp.title = `Libre ${fmtDur(dur)}`;
-          cell.appendChild(gp);
-        });
+      // Render gaps starting at this slot
+      const gap = getGapStartingAt(bi, min);
+      if (gap) {
+        const gapH = (gap.duration / SM) * SH - 2;
+        const g = document.createElement('div');
+        g.className = 'gap';
+        g.style.cssText = `top:1px;height:${gapH}px`;
+        g.textContent = formatDuration(gap.duration);
+        if (gapH < 22) g.style.fontSize = '7.5px';
+        cell.appendChild(g);
       }
 
       row.appendChild(cell);
@@ -457,6 +617,29 @@ function renderGrid() {
     `<div class="leg-item"><div class="leg-dot" style="background:${b.color}"></div>${b.name}${b.prest?' <span style="opacity:.5">(prest.)</span>':''}</div>`
   ).join('');
 }
+
+// ── MOBILE TIMELINE ──
+// Séquence chronologique d'une journée : rdv / bloc / trou libre
+function buildSegments(bi) {
+  const win = getWorkingWindow(bi);
+  if (!win) return [];
+  const mn = d => (d.getHours()-H0)*60 + d.getMinutes();
+  const items = [
+    ...realRdv(bi).map(e => ({ type:'rdv', s:mn(e.st), e:mn(e.en), ev:e })),
+    ...blockedSlots(bi).map(e => ({ type:'block', s:mn(e.st), e:mn(e.en) })),
+  ].sort((a,b) => a.s - b.s || a.e - b.e);
+  const segs = [];
+  let cursor = win.start;
+  for (const it of items) {
+    if (it.e <= cursor) continue;
+    if (it.s > cursor) segs.push({ type:'gap', s:cursor, e:it.s });
+    segs.push({ ...it, s: Math.max(it.s, cursor) });
+    cursor = Math.max(cursor, it.e);
+  }
+  if (cursor < win.end) segs.push({ type:'gap', s:cursor, e:win.end });
+  return segs.filter(s => s.e - s.s >= 5);
+}
+const m2t = m => `${f(H0 + Math.floor(m/60))}:${f(m%60)}`;
 
 // ── MOBILE : vue verticale par barbier ──
 function renderMobile() {
@@ -495,18 +678,18 @@ function renderMobile() {
             <div class="m-seg-time">${m2t(sg.s)}</div>
             <div class="m-seg-body m-rdv" style="background:${b.bg};color:${b.text}">
               <div class="m-rdv-service">${ev.label}</div>
-              <div class="m-rdv-meta">${fmtTime(ev.st)}–${fmtTime(ev.en)} · ${fmtDur(dur)}</div>
+              <div class="m-rdv-meta">${fmtTime(ev.st)}–${fmtTime(ev.en)} · ${formatDuration(dur)}</div>
             </div>
           </div>`;
         } else if (sg.type === 'block') {
           body += `<div class="m-seg">
             <div class="m-seg-time">${m2t(sg.s)}</div>
-            <div class="m-seg-body m-block"><span>&#128274;</span><span class="m-block-txt">Indisponible</span><span class="m-block-dur">${fmtDur(dur)}</span></div>
+            <div class="m-seg-body m-block"><span>&#128274;</span><span class="m-block-txt">Indisponible</span><span class="m-block-dur">${formatDuration(dur)}</span></div>
           </div>`;
         } else {
           body += `<div class="m-seg">
             <div class="m-seg-time">${m2t(sg.s)}</div>
-            <div class="m-seg-body m-gap"><span class="m-gap-txt">${fmtDur(dur)} libre</span><span class="m-gap-sub">${m2t(sg.s)}–${m2t(sg.e)}</span></div>
+            <div class="m-seg-body m-gap"><span class="m-gap-txt">${formatDuration(dur)} libre</span><span class="m-gap-sub">${m2t(sg.s)}–${m2t(sg.e)}</span></div>
           </div>`;
         }
       });
@@ -532,16 +715,21 @@ function setLabel() {
 
 function render() {
   setLabel();
-  renderCards();
-  renderGrid();
-  renderMobile();
+  try { renderCards(); }  catch(e) { console.error('cards', e); }
+  try { renderGrid(); }   catch(e) { console.error('grid', e); }
+  try { renderMobile(); } catch(e) { console.error('mobile', e); }
 }
 
 function go(d) { cur = new Date(cur); cur.setDate(cur.getDate()+d); render(); }
 function goToday() { cur = new Date(); render(); }
 
 setLabel();
-fetchAll().then(render);
+fetchAll().then(render).catch(e => {
+  console.error('fetch', e);
+  document.getElementById('errzone').innerHTML =
+    `<div class="err-banner">Erreur de chargement. Recharge la page dans quelques secondes.</div>`;
+  render();
+});
 </script>
 </body>
 </html>
