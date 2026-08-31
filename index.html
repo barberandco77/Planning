@@ -47,7 +47,7 @@ main { max-width: 1300px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
 .btn-today:hover { opacity: .8; }
 
 /* ── STATUS CARDS ── */
-.cards { display: grid; grid-template-columns: repeat(9, minmax(0,1fr)); gap: 6px; margin-bottom: 1.25rem; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(86px, 1fr)); gap: 6px; margin-bottom: 1.25rem; }
 .card {
   background: var(--white); border: 1px solid var(--border); border-radius: 10px;
   padding: 10px 6px; text-align: center; position: relative; overflow: hidden;
@@ -117,37 +117,9 @@ main { max-width: 1300px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
   text-shadow: 0 1px 0 rgba(255,255,255,.5);
 }
 
-/* ── MOBILE : LISTE VERTICALE ── */
+/* ── MOBILE TIMELINE VIEW ── */
 .mobile-view { display: none; }
 
-.m-barber { background: var(--white); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
-.m-barber.prest { border-style: dashed; }
-.m-bhead { display: flex; align-items: center; justify-content: space-between; padding: 11px 13px; border-bottom: 1px solid var(--border); }
-.m-bhead-l { display: flex; align-items: center; gap: 9px; }
-.m-bdot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-.m-bname { font-size: 14px; font-weight: 700; }
-.m-bhead-r { display: flex; align-items: center; gap: 8px; }
-.m-bcount { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
-.m-badge { font-size: 9.5px; font-weight: 600; padding: 3px 9px; border-radius: 20px; display: flex; align-items: center; gap: 4px; text-transform: uppercase; letter-spacing: .02em; }
-.m-closed { display: flex; align-items: center; justify-content: space-between; padding: 11px 13px; opacity: .7; }
-.m-closed-l { display: flex; align-items: center; gap: 9px; }
-.m-closed-name { font-size: 13px; font-weight: 600; color: var(--muted); }
-.m-day { padding: 8px; display: flex; flex-direction: column; gap: 5px; }
-.m-seg { display: flex; gap: 9px; align-items: stretch; }
-.m-seg-time { flex: 0 0 40px; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--muted); padding-top: 9px; font-weight: 500; text-align: right; }
-.m-seg-body { flex: 1; border-radius: 9px; padding: 9px 12px; min-height: 42px; display: flex; flex-direction: column; justify-content: center; }
-.m-rdv { box-shadow: inset 0 0 0 1px rgba(0,0,0,.03); }
-.m-rdv-service { font-size: 13px; font-weight: 700; line-height: 1.2; }
-.m-rdv-meta { font-size: 11px; font-family: 'DM Mono', monospace; opacity: .75; margin-top: 2px; }
-.m-block { background: repeating-linear-gradient(135deg, #d6d6d1, #d6d6d1 6px, #c9c9c4 6px, #c9c9c4 12px); border: 1px solid #b4b4ae; flex-direction: row; align-items: center; gap: 7px; color: rgba(0,0,0,.55); }
-.m-block-txt { font-size: 12px; font-weight: 600; }
-.m-block-dur { font-size: 11px; font-family: 'DM Mono', monospace; opacity: .8; margin-left: auto; }
-.m-gap { background: rgba(34,197,94,.07); border: 1.5px dashed rgba(34,197,94,.4); flex-direction: row; align-items: center; gap: 7px; color: #15803d; }
-.m-gap-txt { font-size: 13px; font-weight: 700; }
-.m-gap-sub { font-size: 11px; opacity: .7; margin-left: auto; font-family: 'DM Mono', monospace; }
-.m-empty { padding: 16px 13px; text-align: center; font-size: 12px; color: var(--muted); font-style: italic; }
-
-/* ── ancienne timeline (non utilisée) ── */
 .barber-row {
   background: var(--white);
   border: 1px solid var(--border);
@@ -332,11 +304,15 @@ main { max-width: 1300px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
 </main>
 
 <script>
+// Chaîne de proxies CORS avec plusieurs fallbacks.
+// Chaque entrée : { url, json } — json=true si le proxy renvoie {contents:"..."}
 const PROXIES = [
-  url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
-  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-  url => `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(url)}`,
-  url => `https://thingproxy.freeboard.io/fetch/${url}`,
+  u => ({ url: `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(u)}`, json: false }),
+  u => ({ url: `https://corsproxy.io/?url=${encodeURIComponent(u)}`, json: false }),
+  u => ({ url: `https://api.allorigins.win/get?url=${encodeURIComponent(u)}`, json: true }),
+  u => ({ url: `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`, json: false }),
+  u => ({ url: `https://thingproxy.freeboard.io/fetch/${u}`, json: false }),
+  u => ({ url: `https://proxy.cors.sh/${u}`, json: false }),
 ];
 
 const BASE     = 'https://product.api.euwest1.prod.planityapp.com/getCalendarIcalEvents';
@@ -352,6 +328,7 @@ const BARBERS = [
   { name:'BarberWill', cal:'-Mk2LVGQLBFAlH4z_plh', biz:BIZ_EMP,  color:'#5548b0', bg:'#eceafd', text:'#302880' },
   { name:'HairByNN',   cal:'-NtWD3xo8WYzcooGXWCd', biz:BIZ_EMP,  color:'#b83025', bg:'#fde8e6', text:'#6b1510' },
   { name:'Jo',         cal:'-Oq5TPRWn96oT1FZwThF', biz:BIZ_EMP,  color:'#0d9488', bg:'#ccfbf1', text:'#134e4a' },
+  { name:'Remby',      cal:'-P-3mL0w130eHCjnai3S', biz:BIZ_EMP,  color:'#ea7317', bg:'#ffe8cc', text:'#7c3a00' },
   { name:'Veny',       cal:'-Ok3wmlpVH1IS3ycKx2V', biz:BIZ_PRES, color:'#0891b2', bg:'#e0f2fe', text:'#0c4a6e', prest:true },
   { name:'Waggy',      cal:'-Ok3yGbboZmn-cXRPP4G', biz:BIZ_PRES, color:'#65a30d', bg:'#ecfccb', text:'#365314', prest:true },
   { name:'Mcken',      cal:'-Oo6JSRIXBL-RVhyIFqQ', biz:BIZ_PRES, color:'#9333ea', bg:'#f3e8ff', text:'#581c87', prest:true },
@@ -386,10 +363,14 @@ function parseIcal(txt) {
 
 async function fetchOne(url) {
   for (const mk of PROXIES) {
+    const { url: proxyUrl, json } = mk(url);
     try {
-      const r = await fetch(mk(url), { signal: AbortSignal.timeout(8000) });
+      const r = await fetch(proxyUrl, { signal: AbortSignal.timeout(9000) });
       if (!r.ok) continue;
-      const txt = await r.text();
+      let txt = await r.text();
+      if (json) {
+        try { txt = JSON.parse(txt).contents || ''; } catch (_) { continue; }
+      }
       if (txt.includes('BEGIN:VCALENDAR')) return txt;
     } catch (_) { continue; }
   }
@@ -619,93 +600,145 @@ function renderGrid() {
 }
 
 // ── MOBILE TIMELINE ──
-// Séquence chronologique d'une journée : rdv / bloc / trou libre
-function buildSegments(bi) {
-  const win = getWorkingWindow(bi);
-  if (!win) return [];
-  const mn = d => (d.getHours()-H0)*60 + d.getMinutes();
-  const items = [
-    ...realRdv(bi).map(e => ({ type:'rdv', s:mn(e.st), e:mn(e.en), ev:e })),
-    ...blockedSlots(bi).map(e => ({ type:'block', s:mn(e.st), e:mn(e.en) })),
-  ].sort((a,b) => a.s - b.s || a.e - b.e);
-  const segs = [];
-  let cursor = win.start;
-  for (const it of items) {
-    if (it.e <= cursor) continue;
-    if (it.s > cursor) segs.push({ type:'gap', s:cursor, e:it.s });
-    segs.push({ ...it, s: Math.max(it.s, cursor) });
-    cursor = Math.max(cursor, it.e);
-  }
-  if (cursor < win.end) segs.push({ type:'gap', s:cursor, e:win.end });
-  return segs.filter(s => s.e - s.s >= 5);
-}
-const m2t = m => `${f(H0 + Math.floor(m/60))}:${f(m%60)}`;
-
-// ── MOBILE : vue verticale par barbier ──
 function renderMobile() {
   const wrap = document.getElementById('mobile-view');
-  let html = '';
+  wrap.innerHTML = '';
 
-  BARBERS.forEach((b, bi) => {
-    if (bi === FIRST_PREST) {
-      html += `<div class="prest-sep"><div class="prest-sep-line"></div><div class="prest-sep-label">Prestataires</div><div class="prest-sep-line"></div></div>`;
+  BARBERS.forEach((b, i) => {
+    // Séparateur avant les prestataires
+    if (i === FIRST_PREST) {
+      wrap.innerHTML += `<div class="prest-sep">
+        <div class="prest-sep-line"></div>
+        <div class="prest-sep-label">Prestataires</div>
+        <div class="prest-sep-line"></div>
+      </div>`;
     }
 
-    const open = isOpen(bi);
-    const rdvs = realRdv(bi);
+    const open = isOpen(i);
+    const rdvs = realRdv(i);
+    const blocked = blockedSlots(i);
+    const win = getWorkingWindow(i);
+
+    const row = document.createElement('div');
+    row.className = 'barber-row' + (b.prest ? ' prest' : '');
+
+    // Header du barbier
+    row.innerHTML = `<div class="barber-header" style="border-left:3px solid ${b.color}">
+      <div class="barber-header-left">
+        <div class="barber-color-dot" style="background:${b.color}"></div>
+        <div class="barber-header-name">${b.name}</div>
+      </div>
+      <div class="barber-header-right">
+        ${open ? `<span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">${rdvs.length} rdv</span>` : ''}
+        <div class="badge-sm ${open?'badge-open':'badge-closed'}">
+          <div class="bdot ${open?'bdot-open':'bdot-closed'}" style="width:5px;height:5px"></div>
+          ${open?'Ouvert':'Fermé'}
+        </div>
+      </div>
+    </div>`;
 
     if (!open) {
-      html += `<div class="m-barber${b.prest?' prest':''}">
-        <div class="m-closed">
-          <div class="m-closed-l"><div class="m-bdot" style="background:${b.color};opacity:.5"></div><div class="m-closed-name">${b.name}</div></div>
-          <div class="m-badge badge-closed"><div class="bdot bdot-closed"></div>${cur.getDay()===0?'Fermé':'Absent'}</div>
-        </div>
-      </div>`;
-      return;
-    }
-
-    const segs = buildSegments(bi);
-    let body = '';
-    if (!segs.length) {
-      body = `<div class="m-empty">Aucune information</div>`;
+      row.innerHTML += `<div class="tl-closed">Indisponible aujourd'hui</div>`;
     } else {
-      body = `<div class="m-day">`;
-      segs.forEach(sg => {
-        const dur = sg.e - sg.s;
-        if (sg.type === 'rdv') {
-          const ev = sg.ev;
-          body += `<div class="m-seg">
-            <div class="m-seg-time">${m2t(sg.s)}</div>
-            <div class="m-seg-body m-rdv" style="background:${b.bg};color:${b.text}">
-              <div class="m-rdv-service">${ev.label}</div>
-              <div class="m-rdv-meta">${fmtTime(ev.st)}–${fmtTime(ev.en)} · ${formatDuration(dur)}</div>
-            </div>
-          </div>`;
-        } else if (sg.type === 'block') {
-          body += `<div class="m-seg">
-            <div class="m-seg-time">${m2t(sg.s)}</div>
-            <div class="m-seg-body m-block"><span>&#128274;</span><span class="m-block-txt">Indisponible</span><span class="m-block-dur">${formatDuration(dur)}</span></div>
-          </div>`;
-        } else {
-          body += `<div class="m-seg">
-            <div class="m-seg-time">${m2t(sg.s)}</div>
-            <div class="m-seg-body m-gap"><span class="m-gap-txt">${formatDuration(dur)} libre</span><span class="m-gap-sub">${m2t(sg.s)}–${m2t(sg.e)}</span></div>
-          </div>`;
-        }
+      // Timeline horizontale avec RDV + blocs grisés + trous libres
+      const tlWrap = document.createElement('div');
+      tlWrap.className = 'timeline-wrap';
+
+      // Labels heures
+      const hoursRow = document.createElement('div');
+      hoursRow.className = 'timeline-hours';
+      hoursRow.style.cssText = 'position:relative;height:14px;margin-bottom:3px';
+      for (let h = H0; h <= H1; h += 2) {
+        const pct = ((h - H0) / (H1 - H0)) * 100;
+        const lbl = document.createElement('span');
+        lbl.className = 'tl-hour-label';
+        lbl.textContent = h + 'h';
+        lbl.style.cssText = `position:absolute;left:${pct}%;transform:translateX(-50%)`;
+        hoursRow.appendChild(lbl);
+      }
+      tlWrap.appendChild(hoursRow);
+
+      const track = document.createElement('div');
+      track.className = 'timeline-track';
+
+      // 1) Blocs grisés Planity
+      blocked.forEach(ev => {
+        const startMin = (ev.st.getHours()-H0)*60 + ev.st.getMinutes();
+        const endMin   = (ev.en.getHours()-H0)*60 + ev.en.getMinutes();
+        const left  = Math.max(0, startMin/TOTAL_MIN*100);
+        const width = Math.max(0.3, (endMin-startMin)/TOTAL_MIN*100);
+        const blk = document.createElement('div');
+        blk.className = 'tl-blocked';
+        blk.style.cssText = `left:${left}%;width:${width}%`;
+        blk.title = `Indisponible — ${fmtTime(ev.st)}–${fmtTime(ev.en)}`;
+        track.appendChild(blk);
       });
-      body += `</div>`;
+
+      // 2) Trous libres (uniquement entre RDV/blocs dans la fenêtre de travail)
+      if (win) {
+        const occupied = [...rdvs, ...blocked].map(e => ({
+          s: (e.st.getHours()-H0)*60+e.st.getMinutes(),
+          e: (e.en.getHours()-H0)*60+e.en.getMinutes(),
+        })).sort((a,b) => a.s - b.s);
+        let cursor = win.start;
+        const gaps = [];
+        for (const r of occupied) {
+          if (r.s > cursor) gaps.push({ start: cursor, end: r.s });
+          if (r.e > cursor) cursor = r.e;
+        }
+        if (cursor < win.end) gaps.push({ start: cursor, end: win.end });
+
+        gaps.forEach(g => {
+          const dur = g.end - g.start;
+          if (dur < 15) return;
+          const left  = g.start/TOTAL_MIN*100;
+          const width = dur/TOTAL_MIN*100;
+          const gapEl = document.createElement('div');
+          gapEl.className = 'tl-gap';
+          gapEl.style.cssText = `left:${left}%;width:${width}%`;
+          gapEl.textContent = width > 6 ? formatDuration(dur) : '';
+          gapEl.title = `Libre ${formatDuration(dur)}`;
+          track.appendChild(gapEl);
+        });
+      }
+
+      // 3) RDV clients (par-dessus tout)
+      rdvs.forEach(ev => {
+        const startMin = (ev.st.getHours()-H0)*60 + ev.st.getMinutes();
+        const endMin   = (ev.en.getHours()-H0)*60 + ev.en.getMinutes();
+        const left     = Math.max(0, startMin/TOTAL_MIN*100);
+        const width    = Math.max(0.5, (endMin-startMin)/TOTAL_MIN*100);
+        const appt = document.createElement('div');
+        appt.className = 'tl-appt';
+        appt.style.cssText = `left:${left}%;width:${width}%;background:${b.bg};border-left:2px solid ${b.color}`;
+        appt.innerHTML = `<span class="tl-appt-text" style="color:${b.text}">${ev.label}</span>`;
+        appt.title = `${ev.label} — ${fmtTime(ev.st)}–${fmtTime(ev.en)}`;
+        track.appendChild(appt);
+      });
+
+      tlWrap.appendChild(track);
+      row.appendChild(tlWrap);
+
+      // Liste des RDV
+      if (rdvs.length === 0) {
+        row.innerHTML += `<div class="no-rdv">Aucun rendez-vous prévu</div>`;
+      } else {
+        const list = document.createElement('div');
+        list.className = 'rdv-list';
+        rdvs.forEach(ev => {
+          const dur = (ev.en - ev.st) / 60000;
+          list.innerHTML += `<div class="rdv-item" style="background:${b.bg}">
+            <span class="rdv-time" style="color:${b.text}">${fmtTime(ev.st)}–${fmtTime(ev.en)}</span>
+            <span class="rdv-label" style="color:${b.text}">${ev.label}</span>
+            <span style="color:${b.text};opacity:.6;font-size:10px;font-family:'DM Mono',monospace;margin-left:auto">${formatDuration(dur)}</span>
+          </div>`;
+        });
+        row.appendChild(list);
+      }
     }
 
-    html += `<div class="m-barber${b.prest?' prest':''}">
-      <div class="m-bhead">
-        <div class="m-bhead-l"><div class="m-bdot" style="background:${b.color}"></div><div class="m-bname">${b.name}</div></div>
-        <div class="m-bhead-r"><span class="m-bcount">${rdvs.length} rdv</span><div class="m-badge badge-open"><div class="bdot bdot-open"></div>Ouvert</div></div>
-      </div>
-      ${body}
-    </div>`;
+    wrap.appendChild(row);
   });
-
-  wrap.innerHTML = html;
 }
 
 function setLabel() {
@@ -723,13 +756,31 @@ function render() {
 function go(d) { cur = new Date(cur); cur.setDate(cur.getDate()+d); render(); }
 function goToday() { cur = new Date(); render(); }
 
-setLabel();
-fetchAll().then(render).catch(e => {
-  console.error('fetch', e);
-  document.getElementById('errzone').innerHTML =
-    `<div class="err-banner">Erreur de chargement. Recharge la page dans quelques secondes.</div>`;
+// Chargement avec 1 nouvelle tentative automatique si tout échoue
+async function loadAndRender(isRetry) {
+  try {
+    await fetchAll();
+  } catch (e) {
+    console.error('fetch', e);
+  }
+  const gotData = Object.values(cals).some(c => c && c.length);
+  if (!gotData && !isRetry) {
+    document.getElementById('errzone').innerHTML =
+      `<div class="err-banner">Chargement en cours, nouvelle tentative...</div>`;
+    setTimeout(() => loadAndRender(true), 1500);
+    return;
+  }
+  if (!gotData) {
+    document.getElementById('errzone').innerHTML =
+      `<div class="err-banner">Impossible de charger les agendas pour le moment. <button onclick="location.reload()" style="background:#991b1b;color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;margin-left:6px">Réessayer</button></div>`;
+  } else {
+    document.getElementById('errzone').innerHTML = '';
+  }
   render();
-});
+}
+
+setLabel();
+loadAndRender(false);
 </script>
 </body>
 </html>
